@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 @Data
 @ToString
 @Entity
+@Table(name="employee")
 @ApiModel
 public class Employee {
     @Id
@@ -29,42 +31,52 @@ public class Employee {
 
     @Column
     @ApiModelProperty("员工姓名")
+    @NotBlank(message = "username can not be empty")
     private String name;
 
     @Column
     @ApiModelProperty("员工昵称")
+    @NotBlank(message = "nickname can not be empty")
     private String nickName;
 
     @Column
     @ApiModelProperty("员工手机号")
+    @NotBlank(message = "cellphone can not be empty")
     private String cellphone;
 
     @Column
     @ApiModelProperty("员工邮箱")
+    @NotBlank(message = "email can not be empty")
     private String email;
 
     @Column
     @ApiModelProperty("员工当前状态")
+    @NotBlank(message = "status can not be empty")
     private Integer status;
 
     @Column
     @ApiModelProperty("员工归属部门")
+    @NotBlank(message = "department can not be empty")
     private Integer deptId;
 
     @Column
     @ApiModelProperty("员工所属院校")
+    @NotBlank(message = "school can not be empty")
     private Integer schoolId;
 
     @Column
     @ApiModelProperty("雇佣时间")
+    @NotBlank(message = "employmentDatetime can not be empty")
     private Date employmentDatetime;
 
     @Column
     @ApiModelProperty("创建时间")
+    @NotBlank(message = "createDatetime can not be empty")
     private Date createDatetime;
 
     @Column
     @ApiModelProperty("创建人")
+    @NotBlank(message = "createBy can not be empty")
     private String createBy;
 
     @Column

@@ -1,5 +1,4 @@
 spring:
-  port: 8888
   datasource:
     url: jdbc:mysql://localhost:3306/employee?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     username: root
@@ -8,10 +7,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 jpa:
+  database: mysql
   hibernate:
     ddl-auto: update #自动更新
-  show-sql: true  #日志中显示sql语句
+  show-sql: true  #开发阶段,打印要执行的sql语句.
 
 logging:
   level:
     root: debug
+
+server:
+  port: 8888

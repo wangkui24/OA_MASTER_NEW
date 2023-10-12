@@ -1,7 +1,9 @@
 package com.kwang43.boot.controller;
 
+import com.kwang43.boot.config.Resource;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.repository.EmployeeRepository;
+import com.kwang43.boot.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +20,20 @@ import java.util.*;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
 
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
-    public List<Employee> findEmployees() {
-        return employeeRepository.findAll();
+    public Resource<List<Employee>> findEmployees() {
+        return new Resource<>(employeeService.findAllEmployee());
     }
 
     @GetMapping(path = "/{id}")
     @ApiOperation(value="按id查询员工信息", notes="")
-    public Optional<Employee> findEmployeeById(@PathVariable("id") Long id) {
-        return employeeRepository.findById(id);
+    public Resource<Employee> findEmployeeById(@PathVariable("id") Long id) {
+        return new Resource<>(employeeService.findById(id));
     }
 
     /**
@@ -38,14 +41,14 @@ public class EmployeeController {
      */
     @PostMapping("")
     @ApiOperation(value="添加员工", notes="")
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return  employeeRepository.save(employee);
+    public Resource<Boolean> addEmployee(@RequestBody Employee employee) {
+        return  new Resource<>(employeeService.saveEmployee(employee));
     }
 
     @DeleteMapping(path = "/{id}")
     @ApiOperation(value="按Id删除员工", notes="")
-    public String deleteById(@PathVariable("id") Long id) {
-        employeeRepository.deleteById(id);
-        return "success";
+    public Resource<Boolean> deleteById(@PathVariable("id") Long id) {
+        return new Resource<>(employeeService.deleteById(id));
     }
+
 }
