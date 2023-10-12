@@ -1,4 +1,4 @@
-package com.yyg.boot.config;
+package com.kwang43.boot.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;
@@ -9,12 +9,17 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+/**
+ * 功能：
+ * 作者：kwang43
+ * 日期：2023/10/12 14:37
+ */
+
 @Data
 @ComponentScan
 @Configuration
 @ConfigurationProperties(prefix="spring.datasource")
 public class DbConfig {
-
     private String url;
     private String username;
     private String password;
@@ -27,5 +32,4 @@ public class DbConfig {
         dataSource.setPassword(password);
         return dataSource;
     }
-
 }

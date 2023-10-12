@@ -1,15 +1,15 @@
 package com.kwang43.boot.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -66,18 +66,32 @@ public class Employee {
 
     @Column
     @ApiModelProperty("雇佣时间")
+    @Temporal(TemporalType.DATE)
     @NotBlank(message = "employmentDatetime can not be empty")
     private Date employmentDatetime;
 
     @Column
     @ApiModelProperty("创建时间")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     @NotBlank(message = "createDatetime can not be empty")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDatetime;
 
     @Column
     @ApiModelProperty("创建人")
+    @CreatedBy
     @NotBlank(message = "createBy can not be empty")
     private String createBy;
+
+    @Column
+    @ApiModelProperty("修改时间")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    @NotBlank(message = "updateDatetime can not be empty")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateDatetime;
+
 
     @Column
     @ApiModelProperty("备注")

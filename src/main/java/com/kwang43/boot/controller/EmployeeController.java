@@ -46,7 +46,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ApiOperation(value="按Id删除员工", notes="")
+    @ApiOperation(value="按id删除员工", notes="")
     public Resource<Boolean> deleteById(@PathVariable("id") Long id) {
         return new Resource<>(employeeService.deleteById(id));
     }
