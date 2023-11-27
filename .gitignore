@@ -1,0 +1,12 @@
+F:
+.idea
+.classpath
+.project
+.settings
+.checkstyle
+.DS_Store
+*.iml
+target
+**/.flattened-pom.xml
+*.class
+*.log

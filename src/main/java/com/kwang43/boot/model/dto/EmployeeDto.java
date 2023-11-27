@@ -1,16 +1,24 @@
-package com.kwang43.boot.model;
+package com.kwang43.boot.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.kwang43.boot.model.BaseEnum;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 功能：
  * 作者：kwang43
- * 日期：2023/10/12 16:27
+ * 日期：2023/10/16 13:45
  */
+
 @Data
-public class EmployeeQueryDto {
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EmployeeDto implements Serializable {
     private Long id;
 
     private String name;
@@ -20,6 +28,8 @@ public class EmployeeQueryDto {
     private String cellphone;
 
     private String email;
+
+    private BaseEnum.Employee.GenderEnum gender;
 
     private Integer status;
 
@@ -38,5 +48,4 @@ public class EmployeeQueryDto {
     private String updateBy;
 
     private String remark;
-
 }

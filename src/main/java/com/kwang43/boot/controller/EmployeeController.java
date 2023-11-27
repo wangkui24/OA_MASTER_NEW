@@ -2,14 +2,13 @@ package com.kwang43.boot.controller;
 
 import com.kwang43.boot.config.Resource;
 import com.kwang43.boot.domain.Employee;
-import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * 功能：

@@ -20,15 +20,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Resource<T> {
     private T data;
-    protected List<Message> messageList;
+    protected List<Message> messageContent;
 
 
     public Resource(T data) {
         this.data = data;
     }
 
-    public Resource(List<Message> messageList) {
-        setMessageList(messageList);
+    public Resource(List<Message> messageContent) {
+        setMessageContent(messageContent);
     }
 
     public static final <T> Resource<T> of(T data) {

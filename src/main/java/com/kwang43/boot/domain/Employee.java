@@ -1,12 +1,15 @@
 package com.kwang43.boot.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kwang43.boot.model.BaseEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -50,6 +53,11 @@ public class Employee {
     private String email;
 
     @Column
+    @ApiModelProperty("员工性别")
+    @NotBlank(message = "gender can not be empty")
+    private BaseEnum.Employee.GenderEnum gender;
+
+    @Column
     @ApiModelProperty("员工当前状态")
     @NotBlank(message = "status can not be empty")
     private Integer status;
@@ -68,6 +76,7 @@ public class Employee {
     @ApiModelProperty("雇佣时间")
     @Temporal(TemporalType.DATE)
     @NotBlank(message = "employmentDatetime can not be empty")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date employmentDatetime;
 
     @Column
@@ -87,11 +96,14 @@ public class Employee {
     @Column
     @ApiModelProperty("修改时间")
     @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    @NotBlank(message = "updateDatetime can not be empty")
+    @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateDatetime;
 
+    @Column
+    @ApiModelProperty("更新人")
+    @LastModifiedBy
+    private String updateBy;
 
     @Column
     @ApiModelProperty("备注")
