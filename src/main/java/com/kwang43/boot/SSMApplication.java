@@ -2,6 +2,7 @@ package com.kwang43.boot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 功能：以XML方式整合SSM.
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
+@ComponentScan(value = "com.kwang43")
 public class SSMApplication {
     public static void main(String[] args) {
         SpringApplication.run(SSMApplication.class, args);

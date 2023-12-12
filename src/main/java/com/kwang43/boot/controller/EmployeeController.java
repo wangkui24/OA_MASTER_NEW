@@ -25,13 +25,13 @@ public class EmployeeController {
 
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
-    public Resource<List<Employee>> findEmployees() {
+    public Resource<List<Employee>>findEmployees() {
         return new Resource<>(employeeService.findAllEmployee());
     }
 
     @GetMapping(path = "/{id}")
     @ApiOperation(value="按id查询员工信息", notes="")
-    public Resource<Employee> findEmployeeById(@PathVariable("id") Long id) {
+    public Resource<Employee>findEmployeeById(@PathVariable("id") Long id) {
         return new Resource<>(employeeService.findById(id));
     }
 
@@ -40,13 +40,13 @@ public class EmployeeController {
      */
     @PostMapping("")
     @ApiOperation(value="添加员工", notes="")
-    public Resource<Boolean> addEmployee(@RequestBody Employee employee) {
-        return  new Resource<>(employeeService.saveEmployee(employee));
+    public Resource<Boolean>addEmployee(@RequestBody Employee employee) {
+        return new Resource<>(employeeService.saveEmployee(employee));
     }
 
     @DeleteMapping(path = "/{id}")
     @ApiOperation(value="按id删除员工", notes="")
-    public Resource<Boolean> deleteById(@PathVariable("id") Long id) {
+    public Resource<Boolean>deleteById(@PathVariable("id") Long id) {
         return new Resource<>(employeeService.deleteById(id));
     }
 

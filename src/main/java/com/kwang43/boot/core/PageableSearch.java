@@ -48,5 +48,4 @@ public class PageableSearch implements Serializable {
         }
         return PageRequest.of(getPageNum() == null ? Const.DEFAULT_PAGE_INDEX : getPageNum(),getPageSize() == null ? Const.DEFAULT_PAGE_SIZE : getPageSize(), Sort.by(lists));
     }
-
 }

@@ -12,14 +12,13 @@ import javax.sql.DataSource;
 /**
  * 功能：
  * 作者：kwang43
- * 日期：2023/10/12 14:37
+ * 日期：2023/12/12 15:13
  */
-
 @Data
 @ComponentScan
 @Configuration
 @ConfigurationProperties(prefix="spring.datasource")
-public class DbConfig {
+public class DBConfig {
     private String url;
     private String username;
     private String password;
