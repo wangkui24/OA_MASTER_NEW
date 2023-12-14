@@ -5,6 +5,7 @@ import com.kwang43.boot.model.BaseEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -22,11 +24,12 @@ import java.util.Date;
  */
 
 @Data
-@ToString
 @Entity
-@Table(name="employee")
+@ToString
 @ApiModel
-public class Employee {
+@NoArgsConstructor
+@Table(name="employee")
+public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty("员工id")
@@ -60,17 +63,18 @@ public class Employee {
     @Column
     @ApiModelProperty("员工当前状态")
     @NotBlank(message = "status can not be empty")
-    private Integer status;
+    private BaseEnum.Employee.StatusEnum status;
 
     @Column
     @ApiModelProperty("员工归属部门")
     @NotBlank(message = "department can not be empty")
     private Integer deptId;
 
-    @Column
+    @ManyToOne
     @ApiModelProperty("员工所属院校")
     @NotBlank(message = "school can not be empty")
-    private Integer schoolId;
+    @JoinColumn(name = "school_id", referencedColumnName = "id")
+    private School school;
 
     @Column
     @ApiModelProperty("雇佣时间")
@@ -81,10 +85,10 @@ public class Employee {
 
     @Column
     @ApiModelProperty("创建时间")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @CreatedDate
     @NotBlank(message = "createDatetime can not be empty")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDatetime;
 
     @Column
@@ -95,9 +99,9 @@ public class Employee {
 
     @Column
     @ApiModelProperty("修改时间")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @LastModifiedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateDatetime;
 
     @Column

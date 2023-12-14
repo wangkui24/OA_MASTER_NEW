@@ -48,15 +48,15 @@ public interface BaseEnum {
             /**
              * JOINING_IN
              */
-            JOINING_IN(0, Const.JOINING_IN),
+            JOINING_IN(1, Const.JOINING_IN),
             /**
              * RESIGNING
              */
-            RESIGNING(0, Const.RESIGNING),
+            RESIGNING(2, Const.RESIGNING),
             /**
              * RESIGNED
              */
-            RESIGNED(0, Const.RESIGNED);
+            RESIGNED(3, Const.RESIGNED);
 
             private Integer value;
             private String name;

@@ -21,6 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PageableSearch implements Serializable {
+
     private boolean sortAsc;
     private String sortBy;
     private Integer pageNum;
