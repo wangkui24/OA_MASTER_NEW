@@ -1,16 +1,14 @@
 package com.kwang43.boot.service.impl;
 
+import com.kwang43.boot.config.PageableUtil;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 功能：
@@ -26,8 +24,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public List<Employee> findAllEmployee() {
-        return employeeRepository.findAll();
+    public Page<Employee> findAllEmployee(int page, int size, String sortField, String sortOrder) {
+        Pageable pageable = PageableUtil.createPageable(page, size, sortField, sortOrder);
+        return employeeRepository.findAll(pageable);
     }
 
     @Override

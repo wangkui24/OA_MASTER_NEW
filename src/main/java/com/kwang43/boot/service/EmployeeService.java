@@ -1,11 +1,10 @@
 package com.kwang43.boot.service;
 
 import com.kwang43.boot.domain.Employee;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface EmployeeService {
-    List<Employee> findAllEmployee();
+    Page<Employee> findAllEmployee(int page, int size, String sortField, String sortOrder);
 
     Employee findById(Long id);
 

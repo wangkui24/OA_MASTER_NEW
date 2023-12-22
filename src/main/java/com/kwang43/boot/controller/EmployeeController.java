@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 功能：
  * 作者：kwang43
@@ -26,8 +24,11 @@ public class EmployeeController {
 
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
-    public Resource<List<Employee>>findEmployees() {
-        return new Resource<>(employeeService.findAllEmployee());
+    public Resource<Page<Employee>>findEmployees(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                 @RequestParam(value = "size", defaultValue = "10") int size,
+                                                 @RequestParam(value = "sortField", defaultValue = "id") String sortField,
+                                                 @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
+        return new Resource<>(employeeService.findAllEmployee(page,size,sortField,sortOrder));
     }
 
     @GetMapping(path = "/{id}")
