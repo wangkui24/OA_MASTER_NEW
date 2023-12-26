@@ -9,6 +9,12 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  redis:
+    database: 0
+    host: 124.223.216.179
+    port: 6379
+    password: wangkui123
+
 
 jpa:
   database: mysql
@@ -22,5 +28,8 @@ logging:
 
 server:
   port: 8989
+
+
+
 
 

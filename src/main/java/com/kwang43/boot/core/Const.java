@@ -16,7 +16,7 @@ public class Const {
 
 
     //for pagination
-    public static final Integer DEFAULT_PAGE_SIZE = 10;
-    public static final Integer DEFAULT_PAGE_INDEX = 0;
-    public static final Integer DEFAULT_MAX_PAGE_SIZE = 3000;
+    public static final String DEFAULT_PAGE_SIZE = "10";
+    public static final String DEFAULT_PAGE_INDEX = "0";
+    public static final String DEFAULT_MAX_PAGE_SIZE = "3000";
 }

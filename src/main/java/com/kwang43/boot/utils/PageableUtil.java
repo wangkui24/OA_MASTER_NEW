@@ -1,4 +1,4 @@
-package com.kwang43.boot.config;
+package com.kwang43.boot.utils;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -14,22 +14,15 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
-
-/**
- * 功能：
- * 作者：kwang43
- * 日期：2023/10/11 15:11
- */
 
 @Data
 @Entity
 @ToString
 @ApiModel
 @NoArgsConstructor
-@Table(name="employee")
-public class Employee implements Serializable {
+@Table(name="v_employee")
+public class VEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty("员工id")
@@ -65,17 +58,13 @@ public class Employee implements Serializable {
     @NotBlank(message = "status can not be empty")
     private BaseEnum.Employee.StatusEnum status;
 
-    @ManyToOne
     @ApiModelProperty("员工归属部门")
     @NotBlank(message = "department can not be empty")
-    @JoinColumn(name = "dept_id", referencedColumnName = "id")
-    private Dept dept;
+    private String deptName;
 
-    @ManyToOne
     @ApiModelProperty("员工所属院校")
     @NotBlank(message = "school can not be empty")
-    @JoinColumn(name = "school_id", referencedColumnName = "id")
-    private School school;
+    private String schoolName;
 
     @Column
     @ApiModelProperty("雇佣时间")
@@ -113,5 +102,4 @@ public class Employee implements Serializable {
     @Column
     @ApiModelProperty("备注")
     private String remark;
-
 }
