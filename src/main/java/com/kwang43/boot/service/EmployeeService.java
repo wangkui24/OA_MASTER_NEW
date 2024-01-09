@@ -13,4 +13,5 @@ public interface EmployeeService {
 
     Boolean deleteById(Long id);
 
+//    Object login(String username, String password, String code, String uuid);
 }

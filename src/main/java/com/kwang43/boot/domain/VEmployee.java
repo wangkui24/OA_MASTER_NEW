@@ -1,7 +1,6 @@
 package com.kwang43.boot.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kwang43.boot.model.BaseEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -51,12 +50,14 @@ public class VEmployee {
     @Column
     @ApiModelProperty("员工性别")
     @NotBlank(message = "gender can not be empty")
-    private BaseEnum.Employee.GenderEnum gender;
+//    private BaseEnum.Employee.GenderEnum gender;
+    private Integer gender;
 
     @Column
     @ApiModelProperty("员工当前状态")
     @NotBlank(message = "status can not be empty")
-    private BaseEnum.Employee.StatusEnum status;
+//    private BaseEnum.Employee.StatusEnum status;
+    private Integer status;
 
     @ApiModelProperty("员工归属部门")
     @NotBlank(message = "department can not be empty")
