@@ -21,8 +21,8 @@ public class CaptchaGenerator {
     public Result generateCaptcha(Result res) throws Exception {
         // 生成验证码图片
         BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_INT_RGB);
-        Graphics g = image.getGraphics();
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        Graphics2D g = image.createGraphics();
+        g.setFont(new Font("Arial", Font.PLAIN, 26));
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 100, 50);
         g.setColor(Color.BLACK);
@@ -39,13 +39,13 @@ public class CaptchaGenerator {
         String uuid = UUID.randomUUID().toString();
         redisTemplate.opsForValue().set(uuid, base64, 2, TimeUnit.MINUTES);
 
-        res.put("base64", base64);
+        res.put("image", base64);
         res.put("uuid", uuid);
         return res;
     }
 
     private String generateRandomString() {
-        int length = 5;
+        int length = 4;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             char c = (char) (Math.random() * 26 + 'A');
