@@ -26,7 +26,18 @@ public class CaptchaGenerator {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 100, 50);
         g.setColor(Color.BLACK);
-        g.drawString(generateRandomString(), 20, 40);
+
+        // 生成随机字符串并计算宽度
+        String randomString = generateRandomString();
+        FontMetrics fontMetrics = g.getFontMetrics();
+        int stringWidth = fontMetrics.stringWidth(randomString);
+
+        // 计算居中位置
+        int x = (100 - stringWidth) / 2;
+        int y = 40;
+
+        // 绘制字符串
+        g.drawString(randomString, x, y);
         g.dispose();
 
         // 将验证码图片转换为Base64编码
@@ -54,3 +65,4 @@ public class CaptchaGenerator {
         return sb.toString();
     }
 }
+
