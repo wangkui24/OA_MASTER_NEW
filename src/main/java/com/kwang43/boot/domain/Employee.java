@@ -65,17 +65,13 @@ public class Employee implements Serializable {
     @NotBlank(message = "status can not be empty")
     private BaseEnum.Employee.StatusEnum status;
 
-    @ManyToOne
     @ApiModelProperty("员工归属部门")
     @NotBlank(message = "department can not be empty")
-    @JoinColumn(name = "dept_id", referencedColumnName = "id")
-    private Dept dept;
+    private Integer deptId;
 
-    @ManyToOne
     @ApiModelProperty("员工所属院校")
     @NotBlank(message = "school can not be empty")
-    @JoinColumn(name = "school_id", referencedColumnName = "id")
-    private School school;
+    private Integer schoolId;
 
     @Column
     @ApiModelProperty("雇佣时间")

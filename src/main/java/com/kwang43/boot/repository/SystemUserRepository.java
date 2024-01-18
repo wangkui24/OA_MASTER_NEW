@@ -5,11 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface VEmployeeRepository extends JpaRepository<VEmployee, Long>, PagingAndSortingRepository<VEmployee,Long> {
-    List<VEmployee> findByCellphone(String cellphone);
-
-    List<VEmployee> findByEmail(String cellphone);
+public interface SystemUserRepository extends JpaRepository<VEmployee, Long>, PagingAndSortingRepository<VEmployee,Long> {
 }

@@ -1,16 +1,21 @@
 package com.kwang43.boot.service.impl;
 
+import com.kwang43.boot.config.Response;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
+import com.kwang43.boot.model.dto.EmployeeDto;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.VEmployeeRepository;
 import com.kwang43.boot.service.EmployeeService;
+import com.kwang43.boot.utils.HttpStatus;
 import com.kwang43.boot.utils.PageableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 功能：
@@ -28,25 +33,83 @@ public class EmployeeServiceImpl implements EmployeeService {
     private VEmployeeRepository vEmployeeRepository;
 
     @Override
-    public Page<VEmployee> findAllEmployee(int page, int size, String sortField, String sortOrder) {
-        Pageable pageable = PageableUtil.createPageable(page, size, sortField, sortOrder);
-        return vEmployeeRepository.findAll(pageable);
+    public Response<Page<VEmployee>> findAllEmployee(int page, int size, String sortField, String sortOrder) {
+        try {
+            Pageable pageable = PageableUtil.createPageable(page, size, sortField, sortOrder);
+            Page<VEmployee> vEmployeeRepositoryAll = vEmployeeRepository.findAll(pageable);
+            return new Response<>(vEmployeeRepositoryAll);
+        }
+        catch (Exception e) {
+            log.error("findAllEmployee error [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, "服务器错误");
+        }
     }
 
     @Override
-    public VEmployee findById(Long id) {
-        return vEmployeeRepository.findById(id).orElseThrow(NullPointerException::new);
+    public Response<VEmployee> findEmployeeById(Long id) {
+        try {
+            VEmployee vEmployee = vEmployeeRepository.findById(id).orElse(null);
+            if (vEmployee != null) {
+                return new Response<>(vEmployee);
+            } else {
+                return new Response<>(HttpStatus.NO_CONTENT, "未找到该用户!");
+            }
+        }
+        catch (Exception e) {
+            log.error("findEmployeeById error [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, "服务器错误");
+        }
+    }
+
+
+    public Response<Boolean> saveEmployee(EmployeeDto employeeDto) {
+        try {
+            List<VEmployee> vEmployeeByCellphone = vEmployeeRepository.findByCellphone(employeeDto.getCellphone());
+            if (!vEmployeeByCellphone.isEmpty()) {
+                return new Response<>(HttpStatus.HAS_EXISTED, "该手机号已存在!");
+            }
+            List<VEmployee> vEmployeeByEamil = vEmployeeRepository.findByEmail(employeeDto.getCellphone());
+            if (!vEmployeeByEamil.isEmpty()) {
+                return new Response<>(HttpStatus.HAS_EXISTED, "该邮箱已存在!");
+            }
+            Employee employee = new Employee();
+            employee.setName(employeeDto.getName());
+            employee.setNickName(employeeDto.getNickName());
+            employee.setCellphone(employeeDto.getCellphone());
+            employee.setEmail(employeeDto.getEmail());
+            employee.setGender(employeeDto.getGender());
+            employee.setStatus(employeeDto.getStatus());
+            employee.setDeptId(employeeDto.getDeptId());
+            employee.setSchoolId(employeeDto.getSchoolId());
+            employee.setEmploymentDatetime(employeeDto.getEmploymentDatetime());
+            employee.setCreateDatetime(employeeDto.getCreateDatetime());
+            employee.setCreateBy(employeeDto.getName());
+            employee.setUpdateDatetime(employeeDto.getUpdateDatetime());
+            employee.setUpdateBy(employeeDto.getUpdateBy());
+            employee.setRemark(employeeDto.getRemark());
+            employeeRepository.save(employee);
+            return new Response<>(true);
+        }
+        catch (Exception e) {
+            log.error("saveEmployee error [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, "服务器错误");
+        }
     }
 
     @Override
-    public Boolean saveEmployee(Employee employee) {
-        employeeRepository.save(employee);
-        return true;
-    }
-
-    @Override
-    public Boolean deleteById(Long id) {
-        employeeRepository.deleteById(id);
-        return true;
+    public Response<Boolean> deleteById(Long id) {
+        try {
+            VEmployee vEmployee = vEmployeeRepository.findById(id).orElse(null);
+            if (vEmployee != null) {
+                employeeRepository.deleteById(id);
+                return new Response<>(true);
+            } else {
+                return new Response<>(HttpStatus.NO_CONTENT, "未找到该用户!");
+            }
+        }
+        catch (Exception e) {
+            log.error("deleteEmployeeById error [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, "服务器错误");
+        }
     }
 }

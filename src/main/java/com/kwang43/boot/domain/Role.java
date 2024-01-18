@@ -8,26 +8,18 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * 功能：
- * 作者：kwang43
- * 日期：2023/12/25 10:53
- */
-
 @Data
 @ToString
 @Entity
 @NoArgsConstructor
-@Table(name="department")
-public class Dept implements Serializable {
-
+@Table(name="system_roles")
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("部门id")
+    @ApiModelProperty("角色id")
     private Long id;
 
     @Column
-    @ApiModelProperty("部门名")
-    private String roleName;
-
+    @ApiModelProperty("角色名")
+    private String name;
 }

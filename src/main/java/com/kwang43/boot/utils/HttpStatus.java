@@ -17,6 +17,11 @@ public class HttpStatus {
     public static final int ACCEPTED = 202;
 
     /**
+     * XX已存在
+     */
+    public static final int HAS_EXISTED = 203;
+
+    /**
      * 操作已经执行成功，但是没有返回数据
      */
     public static final int NO_CONTENT = 204;

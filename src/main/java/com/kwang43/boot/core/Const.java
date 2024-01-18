@@ -14,6 +14,9 @@ public class Const {
     public static  final String RESIGNING = "RESIGNING";
     public static  final String RESIGNED = "RESIGNED";
 
+    public static  final String INACTIVE = "INACTIVE";
+    public static  final String ACTIVE = "ACTIVE";
+    public static  final String BLOCKED = "BLOCKED";
 
     //for pagination
     public static final String DEFAULT_PAGE_SIZE = "10";

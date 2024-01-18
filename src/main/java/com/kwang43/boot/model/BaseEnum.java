@@ -63,6 +63,31 @@ public interface BaseEnum {
         }
     }
 
+    class SystemUser {
+        @Getter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        @JsonRootName("status")
+        public enum StatusEnum {
+            /**
+             * InActive
+             */
+            INACTIVE(0, Const.INACTIVE),
+            /**
+             * Active
+             */
+            ACTIVE(1, Const.ACTIVE),
+            /**
+             * Block
+             */
+            BLOCKED(2, Const.BLOCKED);
+
+            private Integer value;
+            private String name;
+        }
+    }
+
     public class Defalut {
         public Defalut(){
 
