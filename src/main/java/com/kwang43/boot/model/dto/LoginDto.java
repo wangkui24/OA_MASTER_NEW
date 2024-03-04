@@ -1,9 +1,16 @@
 package com.kwang43.boot.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
 @Data
-public class LoginDto {
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LoginDto implements Serializable {
     /**
      * 用户名
      */

@@ -6,10 +6,12 @@ import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
 import com.kwang43.boot.model.dto.EmployeeDto;
 import com.kwang43.boot.service.EmployeeService;
+import com.kwang43.boot.utils.PageableUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,17 +28,6 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
 
-    /*
-    @GetMapping("")
-    @ApiOperation(value="获取员工列表", notes="")
-    public Resource<Page<VEmployee>>findEmployees(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
-                                                  @RequestParam(value = "size", defaultValue = Const.DEFAULT_PAGE_SIZE) int size,
-                                                  @RequestParam(value = "sortField", defaultValue = "id") String sortField,
-                                                  @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
-        return new Resource<>(employeeService.findAllEmployee(page,size,sortField,sortOrder));
-    }
-    */
-
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
     public Response<Page<VEmployee>>findEmployees(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
@@ -46,11 +37,6 @@ public class EmployeeController {
         return employeeService.findAllEmployee(page,size,sortField,sortOrder);
     }
 
-//    @GetMapping(path = "/{id}")
-//    @ApiOperation(value="按id查询员工信息", notes="")
-//    public Response<VEmployee>findEmployeeById(@PathVariable("id") Long id) {
-//        return new Response<>(employeeService.findById(id));
-//    }
 
     @GetMapping(path = "/{id}")
     @ApiOperation(value="按id查询员工信息", notes="")
@@ -67,6 +53,7 @@ public class EmployeeController {
     public Response<Boolean> addEmployee(@RequestBody EmployeeDto employeeDto) {
         return employeeService.saveEmployee(employeeDto);
     }
+
 
     @DeleteMapping(path = "/{id}")
     @ApiOperation(value="按id删除员工", notes="")

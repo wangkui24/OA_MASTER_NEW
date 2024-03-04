@@ -1,32 +1,36 @@
-package com.kwang43.boot.utils;
+package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.Response;
+import com.kwang43.boot.service.CaptchaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.kwang43.boot.utils.HttpStatus.ERROR;
 
 @Slf4j
-@Component
-public class CaptchaGenerator {
+@Service
+public class CaptchaServiceImpl implements CaptchaService {
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 40;
+    private static final int CODE_COUNT = 4;
+    private static final String CHAR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    public Response generateCaptcha() throws Exception {
+
+    @Override
+    public Response<Object> generateCaptchaImage() {
         try {
-//            int i = 1/0;
-//            System.out.println(i);
             // 生成验证码图片
             BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
@@ -79,5 +83,6 @@ public class CaptchaGenerator {
         }
         return sb.toString();
     }
-}
 
+
+}
