@@ -63,13 +63,12 @@ public class CaptchaServiceImpl implements CaptchaService {
             redisTemplate.opsForValue().set(uuid, randomString, 2, TimeUnit.MINUTES);
             HashMap<String, Object> map = new HashMap<>();
             map.put("image", base64);
-            log.info("base64: {}", base64);
             map.put("uuid", uuid);
-            log.info("uuid: {}", uuid);
+            log.info("base64: [{}], uuid: [{}]", base64, uuid);
             return new Response<>(map);
         }
         catch (Exception e){
-            log.error("捕获到异常: {}", e.getMessage());
+            log.error("捕获到异常: [{}]", e.getMessage());
             return new Response<>(ERROR, "生成验证码失败");
         }
     }

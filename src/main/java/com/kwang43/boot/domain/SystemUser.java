@@ -38,6 +38,10 @@ public class SystemUser implements Serializable {
     private String password;
 
     @Column
+    @ApiModelProperty("登陆token")
+    private String token;
+
+    @Column
     @ApiModelProperty("账号邮箱")
     @NotBlank(message = "email can not be empty")
     private String email;

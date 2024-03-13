@@ -68,8 +68,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (!vEmployeeByCellphone.isEmpty()) {
                 return new Response<>(HttpStatus.HAS_EXISTED, "该手机号已存在!");
             }
-            List<VEmployee> vEmployeeByEamil = vEmployeeRepository.findByEmail(employeeDto.getCellphone());
-            if (!vEmployeeByEamil.isEmpty()) {
+            List<VEmployee> vEmployeeByEmail = vEmployeeRepository.findByEmail(employeeDto.getCellphone());
+            if (!vEmployeeByEmail.isEmpty()) {
                 return new Response<>(HttpStatus.HAS_EXISTED, "该邮箱已存在!");
             }
             Employee employee = new Employee();

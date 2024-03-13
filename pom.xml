@@ -61,7 +61,6 @@
             <version>3.0.0</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
@@ -97,8 +96,20 @@
             <optional>true</optional>
         </dependency>
 
-    </dependencies>
+        <!-- jjwt依赖 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
 
+        <!--安全框架引入, 进行权限控制-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <!--注意:配置xml资源属性,允许java包下的xml文件可编译-->
