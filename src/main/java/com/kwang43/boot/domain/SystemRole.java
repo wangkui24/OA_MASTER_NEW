@@ -3,6 +3,7 @@ package com.kwang43.boot.domain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -21,8 +22,10 @@ public class SystemRole {
     @ApiModelProperty("角色id")
     private Long id;
 
+    @Getter
     @Column
     @ApiModelProperty("角色名")
     @NotBlank(message = "RoleName can not be empty")
     private String roleName;
+
 }

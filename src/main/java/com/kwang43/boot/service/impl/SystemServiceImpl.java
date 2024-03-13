@@ -3,6 +3,7 @@ package com.kwang43.boot.service.impl;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.domain.SystemRole;
 import com.kwang43.boot.domain.SystemUser;
+import com.kwang43.boot.domain.SystemUserDto;
 import com.kwang43.boot.model.dto.LoginDto;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.SystemRoleRepository;
@@ -55,10 +56,9 @@ public class SystemServiceImpl implements SystemService {
                            HashMap<Object, Object> map = new HashMap<>();
                            String token = jwtUtils.generateToken(loginDto.getUsername());
                            SystemUser systemUser = accounts.get(0);
-                           Optional<SystemRole> roleInfo = systemRoleRepository.findById(accounts.get(0).getId());
+                           SystemUserDto systemUserDto = new SystemUserDto(systemUser);
                            map.put("token", token);
-                           map.put("user_info", systemUser);
-                           map.put("user_role", roleInfo.get().getRoleName());
+                           map.put("user_info", systemUserDto);
                            return new Response<>("登陆成功!", map);
                        }
                        else {

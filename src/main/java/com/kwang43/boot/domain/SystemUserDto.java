@@ -20,8 +20,7 @@ import java.util.Date;
 @ToString
 @ApiModel
 @NoArgsConstructor
-@Table(name="system_users")
-public class SystemUser implements Serializable {
+public class SystemUserDto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty("账号id")
@@ -51,11 +50,10 @@ public class SystemUser implements Serializable {
     @NotBlank(message = "status can not be empty")
     private BaseEnum.SystemUser.StatusEnum status;
 
-    @ManyToOne
+    @Column
     @ApiModelProperty("账号当前Role")
     @NotBlank(message = "role can not be empty")
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private SystemRole systemRole;
+    private String roleName;
 
     @Column
     @ApiModelProperty("账号创建时间")
@@ -71,4 +69,17 @@ public class SystemUser implements Serializable {
     @NotBlank(message = "createBy can not be empty")
     private String createBy;
 
+    public SystemUserDto(SystemUser systemUser) {
+        this.id = systemUser.getId();
+        this.username = systemUser.getUsername();
+        this.password = systemUser.getPassword();
+        this.token = systemUser.getToken();
+        this.email= systemUser.getEmail();
+        this.status = systemUser.getStatus();
+        this.createDatetime = systemUser.getCreateDatetime();
+        this.createBy = systemUser.getCreateBy();
+        if (systemUser.getSystemRole() != null) {
+            this.roleName = systemUser.getSystemRole().getRoleName();
+        }
+    }
 }
