@@ -13,11 +13,13 @@ public class JwtUtils {
     private final String secret = "qwertyuioplkjhgfdsazxcvb";
     private final long expiration = 10800000; // 过期时间设置为3小时
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String email, String role) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
+                .claim("email", email)
+                .claim("role", role)
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)

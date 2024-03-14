@@ -2,6 +2,8 @@ package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.service.CaptchaService;
+import com.kwang43.boot.utils.RedisUtils;
+import com.kwang43.boot.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,9 +29,16 @@ public class CaptchaServiceImpl implements CaptchaService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
-    public Response<Object> generateCaptchaImage() {
+    public Response<Object> generateCaptchaImage(String old_uuid) {
+        // 如果提供了上一次生成验证码的uuid且其在redis中存在，则删除旧的验证码
+        // 保证同一设备同一时间在redis最多只能有一条数据
+        if (StringUtils.isNotEmpty(old_uuid) && redisUtils.exists(old_uuid)) {
+            redisUtils.remove(old_uuid);
+        }
         try {
             // 生成验证码图片
             BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_INT_RGB);
@@ -60,7 +69,7 @@ public class CaptchaServiceImpl implements CaptchaService {
 
             // 生成UUID并存储在Redis中，设置有效期为2分钟
             String uuid = UUID.randomUUID().toString();
-            redisTemplate.opsForValue().set(uuid, randomString, 2, TimeUnit.MINUTES);
+            redisUtils.set(uuid, randomString, 2);
             HashMap<String, Object> map = new HashMap<>();
             map.put("image", base64);
             map.put("uuid", uuid);

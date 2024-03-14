@@ -4,6 +4,7 @@ import com.kwang43.boot.config.Response;
 import com.kwang43.boot.domain.SystemRole;
 import com.kwang43.boot.domain.SystemUser;
 import com.kwang43.boot.domain.SystemUserDto;
+import com.kwang43.boot.model.BaseEnum;
 import com.kwang43.boot.model.dto.LoginDto;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.SystemRoleRepository;
@@ -54,9 +55,15 @@ public class SystemServiceImpl implements SystemService {
                     else {
                        if (loginDto.getPassword().equals(accounts.get(0).getPassword())) {
                            HashMap<Object, Object> map = new HashMap<>();
-                           String token = jwtUtils.generateToken(loginDto.getUsername());
                            SystemUser systemUser = accounts.get(0);
+                           if (systemUser.getStatus().equals(BaseEnum.SystemUser.StatusEnum.INACTIVE)) {
+                               return new Response<>(HttpStatus.FORBIDDEN, "您的账号未激活!");
+                           }
+                           else if (systemUser.getStatus().equals(BaseEnum.SystemUser.StatusEnum.BLOCKED)) {
+                               return new Response<>(HttpStatus.FORBIDDEN, "您的账号被禁用!");
+                           }
                            SystemUserDto systemUserDto = new SystemUserDto(systemUser);
+                           String token = jwtUtils.generateToken(loginDto.getUsername(),systemUser.getEmail(), systemUserDto.getRoleName());
                            map.put("token", token);
                            map.put("user_info", systemUserDto);
                            return new Response<>("登陆成功!", map);
