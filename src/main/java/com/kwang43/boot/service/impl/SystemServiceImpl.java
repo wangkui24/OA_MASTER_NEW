@@ -1,6 +1,7 @@
 package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.Response;
+import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.SystemRole;
 import com.kwang43.boot.domain.SystemUser;
 import com.kwang43.boot.domain.SystemUserDto;
@@ -16,6 +17,7 @@ import com.kwang43.boot.utils.RedisUtils;
 import com.kwang43.boot.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,14 +28,9 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class SystemServiceImpl implements SystemService {
-    @Autowired
-    private EmployeeRepository employeeRepository;
 
     @Autowired
     private SystemUserRepository systemUserRepository;
-
-    @Autowired
-    private SystemRoleRepository systemRoleRepository;
 
     @Autowired
     private RedisUtils redisUtils;
@@ -50,35 +47,41 @@ public class SystemServiceImpl implements SystemService {
                 if (loginDto.getCode().equals(codeValue)) {
                     List<SystemUser> accounts = systemUserRepository.findByUsername(loginDto.getUsername());
                     if (StringUtils.isEmpty(accounts)) {
-                       return new Response<>(HttpStatus.NO_CONTENT, "该用户不存在!");
+//                        throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_NOT_EXIST);
+                       return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
                     }
                     else {
                        if (loginDto.getPassword().equals(accounts.get(0).getPassword())) {
-                           HashMap<Object, Object> map = new HashMap<>();
                            SystemUser systemUser = accounts.get(0);
                            if (systemUser.getStatus().equals(BaseEnum.SystemUser.StatusEnum.INACTIVE)) {
-                               return new Response<>(HttpStatus.FORBIDDEN, "您的账号未激活!");
+//                               throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
+                               return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
                            }
                            else if (systemUser.getStatus().equals(BaseEnum.SystemUser.StatusEnum.BLOCKED)) {
-                               return new Response<>(HttpStatus.FORBIDDEN, "您的账号被禁用!");
+//                               throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_BLOCKED);
+                               return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_BLOCKED);
                            }
                            SystemUserDto systemUserDto = new SystemUserDto(systemUser);
                            String token = jwtUtils.generateToken(loginDto.getUsername(),systemUser.getEmail(), systemUserDto.getRoleName());
+                           HashMap<Object, Object> map = new HashMap<>();
                            map.put("token", token);
                            map.put("user_info", systemUserDto);
                            return new Response<>("登陆成功!", map);
                        }
                        else {
-                           return new Response<>(HttpStatus.WARN, "密码错误!");
+//                           throw new DataIntegrityViolationException(MessageCode.Account.PASSWORD_ERROR);
+                           return new Response<>(HttpStatus.WARN, MessageCode.Account.PASSWORD_ERROR);
                        }
                     }
                 }
                 else {
-                    return new Response<>(HttpStatus.ERROR, "验证码错误,请重新输入!");
+//                    throw new DataIntegrityViolationException(MessageCode.Account.CAPTCHA_ERROR);
+                    return new Response<>(HttpStatus.ERROR, MessageCode.Account.CAPTCHA_ERROR);
                 }
             }
             else {
-                return new Response<>(HttpStatus.ERROR, "验证码错误或已过期,请刷新验证码!");
+//                throw new DataIntegrityViolationException(MessageCode.Account.CAPTCHA_ERROR_OR_EXPIRE);
+                return new Response<>(HttpStatus.ERROR, MessageCode.Account.CAPTCHA_ERROR_OR_EXPIRE);
             }
         } catch (Exception e) {
             log.info("error: [{}]", e.getMessage());

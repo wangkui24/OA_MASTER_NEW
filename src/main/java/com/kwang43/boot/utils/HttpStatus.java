@@ -2,7 +2,7 @@ package com.kwang43.boot.utils;
 
 public class HttpStatus {
     /**
-     * 操作成功
+     * 操作/请求成功
      */
     public static final int SUCCESS = 200;
 

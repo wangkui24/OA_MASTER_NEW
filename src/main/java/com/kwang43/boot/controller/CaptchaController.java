@@ -5,7 +5,6 @@ import com.kwang43.boot.service.CaptchaService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +13,7 @@ public class CaptchaController {
     @Autowired
     private CaptchaService captchaService;
 
-    @PostMapping("/captcha")
+    @GetMapping("/captcha")
     @ApiOperation(value="获取图片验证码", notes="")
     public Response<Object> getCaptcha(@RequestParam(required = false) String old_uuid) {
         return captchaService.generateCaptchaImage(old_uuid);
