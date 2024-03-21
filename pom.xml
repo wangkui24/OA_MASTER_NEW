@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>ssm</artifactId>
-<!--    <version>1.0-SNAPSHOT</version>-->
+    <!--    <version>1.0-SNAPSHOT</version>-->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -134,5 +134,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>TencentMirror</id>
+            <name>Tencent Mirror</name>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
