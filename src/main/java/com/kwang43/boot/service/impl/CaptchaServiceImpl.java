@@ -1,6 +1,8 @@
 package com.kwang43.boot.service.impl;
 
+import com.kwang43.boot.config.CustomException;
 import com.kwang43.boot.config.Response;
+import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.service.CaptchaService;
 import com.kwang43.boot.utils.RedisUtils;
 import com.kwang43.boot.utils.StringUtils;
@@ -13,10 +15,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import static com.kwang43.boot.utils.HttpStatus.ERROR;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -75,10 +76,10 @@ public class CaptchaServiceImpl implements CaptchaService {
             map.put("uuid", uuid);
             log.info("base64: [{}], uuid: [{}]", base64, uuid);
             return new Response<>(map);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             log.error("捕获到异常: [{}]", e.getMessage());
-            return new Response<>(ERROR, "生成验证码失败");
+            throw new CustomException(MessageCode.Captcha.CREATE_CAPTCHA_FAILED);
+//            return new Response<>(ERROR, "生成验证码失败");
         }
     }
 

@@ -3,7 +3,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
   datasource:
-    url: jdbc:mysql://localhost:3306/employee?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://124.223.216.179:3306/employee?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     username: root
     password: wangkui123
     type: com.alibaba.druid.pool.DruidDataSource

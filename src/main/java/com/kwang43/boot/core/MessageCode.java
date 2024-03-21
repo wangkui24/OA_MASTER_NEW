@@ -10,7 +10,14 @@ public interface MessageCode {
         public static final String ACCOUNT_IS_INACTIVE = "COM0002";
         public static final String ACCOUNT_IS_BLOCKED = "COM0003";
         public static final String PASSWORD_ERROR = "COM0004";
+    }
+
+    class Captcha {
+        private Captcha() {
+        }
+
         public static final String CAPTCHA_ERROR = "COM0005";
         public static final String CAPTCHA_ERROR_OR_EXPIRE = "COM0006";
+        public static final String CREATE_CAPTCHA_FAILED = "COM0007";
     }
 }
