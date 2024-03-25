@@ -1,19 +1,9 @@
 spring:
+  profiles:
+    active: dev
+
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-
-  datasource:
-    url: jdbc:mysql://124.223.216.179:3306/employee?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
-    username: root
-    password: wangkui123
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  redis:
-    database: 0
-    host: 124.223.216.179
-    port: 6379
-    password: 123456
 
 jpa:
   database: mysql
@@ -24,7 +14,3 @@ jpa:
 logging:
   level:
     root: debug
-
-server:
-  port: 1234
-

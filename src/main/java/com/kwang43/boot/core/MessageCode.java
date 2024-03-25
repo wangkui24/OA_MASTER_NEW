@@ -20,4 +20,13 @@ public interface MessageCode {
         public static final String CAPTCHA_ERROR_OR_EXPIRE = "COM0006";
         public static final String CREATE_CAPTCHA_FAILED = "COM0007";
     }
+
+    class Employee {
+        private Employee() {
+        }
+
+        public static final String NOT_FOUND_EMPLOYEE = "COM0008";
+        public static final String MOBILE_NUMBER_HAS_EXISTED = "COM0009";
+        public static final String EMAIL_HAS_EXISTED = "COM0010";
+    }
 }

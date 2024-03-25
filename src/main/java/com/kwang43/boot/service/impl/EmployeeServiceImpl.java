@@ -1,6 +1,7 @@
 package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.Response;
+import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
 import com.kwang43.boot.model.dto.EmployeeDto;
@@ -38,10 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             Pageable pageable = PageableUtil.createPageable(page, size, sortField, sortOrder);
             Page<VEmployee> vEmployeeRepositoryAll = vEmployeeRepository.findAll(pageable);
             return new Response<>(vEmployeeRepositoryAll);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("findAllEmployee error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, "服务器错误");
+            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
         }
     }
 
@@ -52,12 +52,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (vEmployee != null) {
                 return new Response<>(vEmployee);
             } else {
-                return new Response<>(HttpStatus.NO_CONTENT, "未找到该用户!");
+                return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Employee.NOT_FOUND_EMPLOYEE);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("findEmployeeById error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, "服务器错误");
+            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
         }
     }
 
@@ -66,11 +65,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             List<VEmployee> vEmployeeByCellphone = vEmployeeRepository.findByCellphone(employeeDto.getCellphone());
             if (!vEmployeeByCellphone.isEmpty()) {
-                return new Response<>(HttpStatus.HAS_EXISTED, "该手机号已存在!");
+                return new Response<>(HttpStatus.HAS_EXISTED, MessageCode.Employee.MOBILE_NUMBER_HAS_EXISTED);
             }
             List<VEmployee> vEmployeeByEmail = vEmployeeRepository.findByEmail(employeeDto.getCellphone());
             if (!vEmployeeByEmail.isEmpty()) {
-                return new Response<>(HttpStatus.HAS_EXISTED, "该邮箱已存在!");
+                return new Response<>(HttpStatus.HAS_EXISTED, MessageCode.Employee.EMAIL_HAS_EXISTED);
             }
             Employee employee = new Employee();
             employee.setName(employeeDto.getName());
@@ -89,10 +88,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setRemark(employeeDto.getRemark());
             employeeRepository.save(employee);
             return new Response<>(true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("saveEmployee error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, "服务器错误");
+            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
         }
     }
 
@@ -104,12 +102,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeRepository.deleteById(id);
                 return new Response<>(true);
             } else {
-                return new Response<>(HttpStatus.NO_CONTENT, "未找到该用户!");
+                return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Employee.NOT_FOUND_EMPLOYEE);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("deleteEmployeeById error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, "服务器错误");
+            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
         }
     }
 }

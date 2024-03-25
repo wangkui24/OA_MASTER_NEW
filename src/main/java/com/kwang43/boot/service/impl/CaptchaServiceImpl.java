@@ -1,9 +1,9 @@
 package com.kwang43.boot.service.impl;
 
-import com.kwang43.boot.config.CustomException;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.service.CaptchaService;
+import com.kwang43.boot.utils.HttpStatus;
 import com.kwang43.boot.utils.RedisUtils;
 import com.kwang43.boot.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -78,8 +78,7 @@ public class CaptchaServiceImpl implements CaptchaService {
             return new Response<>(map);
         } catch (Exception e) {
             log.error("捕获到异常: [{}]", e.getMessage());
-            throw new CustomException(MessageCode.Captcha.CREATE_CAPTCHA_FAILED);
-//            return new Response<>(ERROR, "生成验证码失败");
+            return new Response<>(HttpStatus.ERROR, MessageCode.Captcha.CREATE_CAPTCHA_FAILED);
         }
     }
 
