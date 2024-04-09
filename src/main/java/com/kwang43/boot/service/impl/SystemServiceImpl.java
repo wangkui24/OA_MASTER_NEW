@@ -1,5 +1,6 @@
 package com.kwang43.boot.service.impl;
 
+import com.kwang43.boot.config.DecryptService;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.SystemUser;
@@ -33,6 +34,9 @@ public class SystemServiceImpl implements SystemService {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    private DecryptService decryptService;
+
     @Override
     public Response<Object> login(LoginDto loginDto) {
         try {
@@ -44,7 +48,10 @@ public class SystemServiceImpl implements SystemService {
                     if (StringUtils.isEmpty(accounts)) {
                         return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
                     } else {
-                        if (loginDto.getPassword().equals(accounts.get(0).getPassword())) {
+                        String decryptedPassword = decryptService.decrypt(accounts.get(0).getPassword());
+//                        log.info("decryptedPassword: {}", decryptedPassword);
+//                        log.info(decryptService.decrypt(loginDto.getPassword()));
+                        if (decryptService.decrypt(loginDto.getPassword()).equals(decryptedPassword)) {
                             SystemUser systemUser = accounts.get(0);
                             if (systemUser.getStatus().equals(BaseEnum.SystemUser.StatusEnum.INACTIVE)) {
                                 return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
