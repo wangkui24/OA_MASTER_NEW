@@ -17,3 +17,11 @@ spring:
     host: 124.223.216.179
     port: 6380
     password: 123456
+
+  boot:
+    admin:
+      client:
+        # 服务端地址
+        url: http://localhost:5678
+
+

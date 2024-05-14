@@ -1,11 +1,13 @@
 package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.DecryptService;
+import com.kwang43.boot.config.EmailService;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.SystemUser;
 import com.kwang43.boot.domain.SystemUserDto;
 import com.kwang43.boot.model.BaseEnum;
+import com.kwang43.boot.model.dto.ForgetPasswordDto;
 import com.kwang43.boot.model.dto.LoginDto;
 import com.kwang43.boot.repository.SystemUserRepository;
 import com.kwang43.boot.service.SystemService;
@@ -37,6 +39,9 @@ public class SystemServiceImpl implements SystemService {
     @Autowired
     private DecryptService decryptService;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public Response<Object> login(LoginDto loginDto) {
         try {
@@ -49,8 +54,6 @@ public class SystemServiceImpl implements SystemService {
                         return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
                     } else {
                         String decryptedPassword = decryptService.decrypt(accounts.get(0).getPassword());
-//                        log.info("decryptedPassword: {}", decryptedPassword);
-//                        log.info(decryptService.decrypt(loginDto.getPassword()));
                         if (decryptService.decrypt(loginDto.getPassword()).equals(decryptedPassword)) {
                             SystemUser systemUser = accounts.get(0);
                             if (systemUser.getStatus().equals(BaseEnum.SystemUser.StatusEnum.INACTIVE)) {
@@ -63,7 +66,7 @@ public class SystemServiceImpl implements SystemService {
                             HashMap<Object, Object> map = new HashMap<>();
                             map.put("token", token);
                             map.put("user_info", systemUserDto);
-                            return new Response<>("登陆成功!", map);
+                            return new Response<>(map);
                         } else {
                             return new Response<>(HttpStatus.WARN, MessageCode.Account.PASSWORD_ERROR);
                         }
@@ -77,6 +80,24 @@ public class SystemServiceImpl implements SystemService {
         } catch (Exception e) {
             log.info("error: [{}]", e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public Response<Object> forget_password(ForgetPasswordDto forgetPasswordDto) {
+        try {
+            List<SystemUser> accountsByUsername = systemUserRepository.findByUsername(forgetPasswordDto.getUsername());
+            if (StringUtils.isEmpty(accountsByUsername)) {
+                return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.USERNAME_NOT_EXIST);
+            }
+            if(!accountsByUsername.get(0).getEmail().equals(forgetPasswordDto.getEmail())) {
+                return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.EMAIL_NOT_MATCH);
+            }
+            emailService.sendPasswordResetEmail(forgetPasswordDto.getEmail(),"https://baidu.com");
+            return new Response<>("邮件发送成功!");
+        }catch(Exception e) {
+            log.info("邮件发送失败: [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SEND_EMAIL_FAILED);
         }
     }
 }

@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface SystemUserRepository extends JpaRepository<SystemUser, Integer>, PagingAndSortingRepository<SystemUser, Integer> {
     List<SystemUser> findByUsername(String username);
+
+    List<SystemUser> findByEmail(String email);
 }

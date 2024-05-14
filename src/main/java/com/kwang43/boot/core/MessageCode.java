@@ -10,6 +10,10 @@ public interface MessageCode {
         public static final String ACCOUNT_IS_INACTIVE = "COM0002";
         public static final String ACCOUNT_IS_BLOCKED = "COM0003";
         public static final String PASSWORD_ERROR = "COM0004";
+        public static final String USERNAME_NOT_EXIST = "COM0011";
+        public static final String EMAIL_NOT_MATCH = "COM0012";
+        public static final String SEND_EMAIL_FAILED = "COM0013";
+
     }
 
     class Captcha {

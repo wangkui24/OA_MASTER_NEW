@@ -1,6 +1,7 @@
 package com.kwang43.boot.controller;
 
 import com.kwang43.boot.config.Response;
+import com.kwang43.boot.model.dto.ForgetPasswordDto;
 import com.kwang43.boot.model.dto.LoginDto;
 import com.kwang43.boot.service.SystemService;
 import io.swagger.annotations.ApiOperation;
@@ -29,5 +30,17 @@ public class SystemController {
     @ApiOperation(value="登录", notes="")
     public Response<Object> login(@RequestBody LoginDto loginDto) {
         return systemService.login(loginDto);
+    }
+
+    /**
+     * 忘记密码
+     *
+     * @param forgetPasswordDto
+     * @return com.kwang43.boot.config.Result
+     **/
+    @PostMapping("/forget_password")
+    @ApiOperation(value="忘记密码", notes="")
+    public Response<Object> forget_password(@RequestBody ForgetPasswordDto forgetPasswordDto) {
+        return systemService.forget_password(forgetPasswordDto);
     }
 }
