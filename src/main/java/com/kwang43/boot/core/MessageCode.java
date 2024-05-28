@@ -33,4 +33,11 @@ public interface MessageCode {
         public static final String MOBILE_NUMBER_HAS_EXISTED = "COM0009";
         public static final String EMAIL_HAS_EXISTED = "COM0010";
     }
+
+    class RequestLeave {
+        private RequestLeave(){
+        }
+
+        public static final String REQUEST_LEAVE_FAILED = "COM0020";
+    }
 }

@@ -88,6 +88,35 @@ public interface BaseEnum {
         }
     }
 
+    class RequestLeave {
+        @Getter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        @JsonRootName("status")
+        public enum StatusEnum {
+            /**
+             * PENDING
+             */
+            PENDING(0, Const.PENDING),
+            /**
+             * APPROVED
+             */
+            ACTIVE(1, Const.APPROVED),
+            /**
+             * REJECTED
+             */
+            BLOCKED(2, Const.REJECTED),
+            /**
+             * CANCEL
+             */
+            CANCEL(3, Const.CANCEL);
+
+            private Integer value;
+            private String name;
+        }
+    }
+
     public class Defalut {
         public Defalut(){
 

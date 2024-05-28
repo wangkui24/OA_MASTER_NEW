@@ -18,6 +18,11 @@ public class Const {
     public static  final String ACTIVE = "ACTIVE";
     public static  final String BLOCKED = "BLOCKED";
 
+    public static  final String PENDING = "PENDING";
+    public static  final String APPROVED = "APPROVED";
+    public static  final String REJECTED = "REJECTED";
+    public static  final String CANCEL = "CANCEL";
+
     //for pagination
     public static final String DEFAULT_PAGE_SIZE = "10";
     public static final String DEFAULT_PAGE_INDEX = "0";

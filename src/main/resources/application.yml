@@ -20,18 +20,11 @@ spring:
           starttls:
             enable: true
 
-
 jpa:
   database: mysql
   hibernate:
     ddl-auto: update #自动更新
   show-sql: true  #开发阶段,打印要执行的sql语句.
-
-#logging:
-#  level:
-#    root: debug
-#  file:
-#    path: C:/Users/kwang43/logs/
 
 logging:
   file: admin-client.log #添加开启admin的日志监控

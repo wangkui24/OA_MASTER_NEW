@@ -1,10 +1,13 @@
 package com.kwang43.boot;
 
+import com.kwang43.boot.utils.StringUtils;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.util.regex.Pattern;
 
 /**
  * 功能：以XML方式整合SSM.
