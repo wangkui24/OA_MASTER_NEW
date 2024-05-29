@@ -27,7 +27,12 @@ jpa:
   show-sql: true  #开发阶段,打印要执行的sql语句.
 
 logging:
+  pattern:
+    console: '%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%X{trace_id}]) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}'
+  level:
+    root: info
   file: admin-client.log #添加开启admin的日志监控
+
 
 private:
   key: 'MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAvjWbN2ep/CjSoslpSwC/gGaLEzM6UyN35Y6h6gIjaHJl4zTgtJ7rS0GgjMIBoaMWBqOfI/nPqu8sOybeqzY7/QIDAQABAkBSOoJ7lUkbRdqpnUDzt8MSE0KUblUMlAzFJMBCleIQyITM6X5WUftA/ozXHjjbnySFadUWUj4PmWwZpELyr44BAiEA6JS+NF4sHZR/Z+f39wZd+eVb/7ZVE3mbU9Gq90EyYGECIQDRXKWhK9VHWAxMLpMIPZZuGNZUEap6d+IR/wD6CYbxHQIhAMDCZlGoqw9o/57yVkTZdhGi0fjA+QnHA8EYSIXb9xCBAiEAgjQyNdgC3knd7AsTGg7jXTlJIiOSeHPSPwruWpJOP+kCIEGUI+Fpy3vIJdKYDnZRlKjEV/66zwIuJb4Y2Lw3zS0g'

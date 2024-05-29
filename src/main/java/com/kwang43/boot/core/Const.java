@@ -23,6 +23,8 @@ public class Const {
     public static  final String REJECTED = "REJECTED";
     public static  final String CANCEL = "CANCEL";
 
+    public static final String LOG_MDC_ID = "trace_id";
+
     //for pagination
     public static final String DEFAULT_PAGE_SIZE = "10";
     public static final String DEFAULT_PAGE_INDEX = "0";
