@@ -1,6 +1,6 @@
 package com.kwang43.boot.service.impl;
 
-import com.kwang43.boot.config.DecryptService;
+import com.kwang43.boot.utils.DecryptUtils;
 import com.kwang43.boot.config.EmailService;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
@@ -37,7 +37,7 @@ public class SystemServiceImpl implements SystemService {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private DecryptService decryptService;
+    private DecryptUtils decryptService;
 
     @Autowired
     private EmailService emailService;

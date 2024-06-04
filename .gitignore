@@ -10,3 +10,5 @@ target
 **/.flattened-pom.xml
 *.class
 *.log
+*.gz
+logs

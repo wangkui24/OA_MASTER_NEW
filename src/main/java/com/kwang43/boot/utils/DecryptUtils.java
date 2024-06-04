@@ -1,4 +1,4 @@
-package com.kwang43.boot.config;
+package com.kwang43.boot.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,10 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 @Service
-public class DecryptService {
+public class DecryptUtils {
     private final PrivateKey privateKey;
 
-    public DecryptService(@Value("${private.key}") String privateKeyBase64) throws Exception {
+    public DecryptUtils(@Value("${private.key}") String privateKeyBase64) throws Exception {
         byte[] keyBytes = Base64.getDecoder().decode(privateKeyBase64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory kf = KeyFactory.getInstance("RSA");
