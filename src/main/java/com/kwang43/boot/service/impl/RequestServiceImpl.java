@@ -42,11 +42,11 @@ public class RequestServiceImpl implements RequestService {
             if(StringUtils.isNotEmpty(requestLeaveDto.getUpdateBy())){
                 leave.setUpdateBy(requestLeaveDto.getUpdateBy());
             }
+            log.error("request leave: {}", leave);
             leaveRepository.save(leave);
-            log.error("request leave successfully [{}]", leave);
             return new Response<>(true);
         }catch (Exception e) {
-            log.error("request leave error [{}]", e.getMessage());
+            log.error("request leave error: {}", e.getMessage());
             return new Response<>(HttpStatus.ERROR, MessageCode.RequestLeave.REQUEST_LEAVE_FAILED);
         }
     }

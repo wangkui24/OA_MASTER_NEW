@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return new Response<>(vEmployeeRepositoryAll);
         } catch (Exception e) {
             log.error("findAllEmployee error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
+            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
         }
     }
 
@@ -56,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         } catch (Exception e) {
             log.error("findEmployeeById error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
+            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
         }
     }
 
@@ -90,7 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return new Response<>(true);
         } catch (Exception e) {
             log.error("saveEmployee error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
+            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
         }
     }
 
@@ -106,7 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         } catch (Exception e) {
             log.error("deleteEmployeeById error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.Account.SERVER_ERROR);
+            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
         }
     }
 }
