@@ -40,7 +40,7 @@ public interface BaseEnum {
         @AllArgsConstructor
         @JsonFormat(shape = JsonFormat.Shape.STRING)
         @JsonRootName("status")
-        public enum StatusEnum {
+        public enum EmployeeStatusEnum {
             /**
              * IN_SERVICE
              */
@@ -61,9 +61,32 @@ public interface BaseEnum {
             private Integer value;
             private String name;
         }
+
+        @Getter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        @JsonRootName("status")
+        public enum AccountStatusEnum {
+            /**
+             * InActive
+             */
+            INACTIVE(0, Const.INACTIVE),
+            /**
+             * Active
+             */
+            ACTIVE(1, Const.ACTIVE),
+            /**
+             * Block
+             */
+            BLOCKED(2, Const.BLOCKED);
+
+            private Integer value;
+            private String name;
+        }
     }
 
-    class SystemUser {
+    class OaUser {
         @Getter
         @NoArgsConstructor
         @AllArgsConstructor

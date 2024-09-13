@@ -31,7 +31,7 @@ public class EmployeeDto implements Serializable {
 
     private BaseEnum.Employee.GenderEnum gender;
 
-    private BaseEnum.Employee.StatusEnum status;
+    private BaseEnum.Employee.EmployeeStatusEnum status;
 
     private Integer deptId;
 

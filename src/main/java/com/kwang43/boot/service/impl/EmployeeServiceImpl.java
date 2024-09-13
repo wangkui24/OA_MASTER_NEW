@@ -71,27 +71,33 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (!vEmployeeByEmail.isEmpty()) {
                 return new Response<>(HttpStatus.HAS_EXISTED, MessageCode.Employee.EMAIL_HAS_EXISTED);
             }
-            Employee employee = new Employee();
-            employee.setName(employeeDto.getName());
-            employee.setNickName(employeeDto.getNickName());
-            employee.setCellphone(employeeDto.getCellphone());
-            employee.setEmail(employeeDto.getEmail());
-            employee.setGender(employeeDto.getGender());
-            employee.setStatus(employeeDto.getStatus());
-            employee.setDeptId(employeeDto.getDeptId());
-            employee.setSchoolId(employeeDto.getSchoolId());
-            employee.setEmploymentDatetime(employeeDto.getEmploymentDatetime());
-            employee.setCreateDatetime(employeeDto.getCreateDatetime());
-            employee.setCreateBy(employeeDto.getName());
-            employee.setUpdateDatetime(employeeDto.getUpdateDatetime());
-            employee.setUpdateBy(employeeDto.getUpdateBy());
-            employee.setRemark(employeeDto.getRemark());
+            Employee employee = saveEmployeeByDto(employeeDto);
             employeeRepository.save(employee);
+            log.info("saveEmployee successfully");
             return new Response<>(true);
         } catch (Exception e) {
             log.error("saveEmployee error [{}]", e.getMessage());
             return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
         }
+    }
+
+    private static Employee saveEmployeeByDto(EmployeeDto employeeDto) {
+        Employee employee = new Employee();
+        employee.setName(employeeDto.getName());
+        employee.setNickName(employeeDto.getNickName());
+        employee.setCellphone(employeeDto.getCellphone());
+        employee.setEmail(employeeDto.getEmail());
+        employee.setGender(employeeDto.getGender());
+        employee.setStatus(employeeDto.getStatus());
+        employee.setDeptId(employeeDto.getDeptId());
+        employee.setSchoolId(employeeDto.getSchoolId());
+        employee.setEmploymentDatetime(employeeDto.getEmploymentDatetime());
+        employee.setCreateDatetime(employeeDto.getCreateDatetime());
+        employee.setCreateBy(employeeDto.getName());
+        employee.setUpdateDatetime(employeeDto.getUpdateDatetime());
+        employee.setUpdateBy(employeeDto.getUpdateBy());
+        employee.setRemark(employeeDto.getRemark());
+        return employee;
     }
 
     @Override
@@ -107,6 +113,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         } catch (Exception e) {
             log.error("deleteEmployeeById error [{}]", e.getMessage());
             return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public Response<Boolean> searchEmployeeForExport(EmployeeDto employeeDto) {
+        try {
+            System.out.println("--START TO EXPORT EMPLOYEE--");
+            return new Response<>(true);
+        } catch (Exception e) {
+            log.error("search employee ForExport error [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, MessageCode.Employee.EXPORT_EMPLOYEE_FAILED);
         }
     }
 }

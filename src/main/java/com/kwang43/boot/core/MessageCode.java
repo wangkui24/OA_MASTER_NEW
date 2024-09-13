@@ -37,6 +37,7 @@ public interface MessageCode {
         public static final String NOT_FOUND_EMPLOYEE = "COM0008";
         public static final String MOBILE_NUMBER_HAS_EXISTED = "COM0009";
         public static final String EMAIL_HAS_EXISTED = "COM0010";
+        public static final String EXPORT_EMPLOYEE_FAILED = "COM0014";
     }
 
     class RequestLeave {

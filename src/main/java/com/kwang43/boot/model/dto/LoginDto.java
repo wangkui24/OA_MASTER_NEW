@@ -12,12 +12,12 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginDto implements Serializable {
     /**
-     * 用户名
+     * 公司邮箱
      */
-    private String username;
+    private String email;
 
     /**
-     * 用户密码
+     * 邮箱密码
      */
     private String password;
 

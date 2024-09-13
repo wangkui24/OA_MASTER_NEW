@@ -1,6 +1,5 @@
 package com.kwang43.boot.repository;
 
-import com.kwang43.boot.domain.SystemRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

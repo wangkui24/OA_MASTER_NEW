@@ -42,7 +42,6 @@ public class Employee implements Serializable {
 
     @Column
     @ApiModelProperty("员工昵称")
-    @NotBlank(message = "nickname can not be empty")
     private String nickName;
 
     @Column
@@ -56,22 +55,23 @@ public class Employee implements Serializable {
     private String email;
 
     @Column
+    @ApiModelProperty("员工当前状态")
+    @NotBlank(message = "status can not be empty")
+    private BaseEnum.Employee.EmployeeStatusEnum status;
+
+    @Column
     @ApiModelProperty("员工性别")
     @NotBlank(message = "gender can not be empty")
     private BaseEnum.Employee.GenderEnum gender;
-
-    @Column
-    @ApiModelProperty("员工当前状态")
-    @NotBlank(message = "status can not be empty")
-    private BaseEnum.Employee.StatusEnum status;
 
     @ApiModelProperty("员工归属部门")
     @NotBlank(message = "department can not be empty")
     private Integer deptId;
 
-    @ApiModelProperty("员工所属院校")
-    @NotBlank(message = "school can not be empty")
-    private Integer schoolId;
+    @Column
+    @ApiModelProperty("密码")
+    @NotBlank(message = "password can not be empty")
+    private String password;
 
     @Column
     @ApiModelProperty("雇佣时间")
@@ -109,5 +109,4 @@ public class Employee implements Serializable {
     @Column
     @ApiModelProperty("备注")
     private String remark;
-
 }

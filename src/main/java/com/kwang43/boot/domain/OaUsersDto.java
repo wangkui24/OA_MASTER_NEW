@@ -14,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -21,57 +22,39 @@ import java.util.Date;
 @ToString
 @ApiModel
 @NoArgsConstructor
-@Table(name="v_employee")
-public class VEmployee {
+public class OaUsersDto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("员工id")
+    @ApiModelProperty("账号id")
     private Long id;
 
     @Column
-    @ApiModelProperty("员工姓名")
-    @NotBlank(message = "name can not be empty")
-    private String name;
-
-    @Column
-    @ApiModelProperty("员工昵称")
+    @ApiModelProperty("账号昵称")
     private String nickName;
 
     @Column
-    @ApiModelProperty("员工手机号")
-    @NotBlank(message = "cellphone can not be empty")
-    private String cellphone;
-
-    @Column
-    @ApiModelProperty("员工邮箱")
+    @ApiModelProperty("账号邮箱")
     @NotBlank(message = "email can not be empty")
     private String email;
 
     @Column
-    @ApiModelProperty("员工当前状态")
-    @NotBlank(message = "status can not be empty")
-    private BaseEnum.Employee.EmployeeStatusEnum status;
+    @ApiModelProperty("账号手机号")
+    @NotBlank(message = "cellphone can not be empty")
+    private String cellphone;
 
     @Column
-    @ApiModelProperty("员工角色")
+    @ApiModelProperty("员工当前状态")
+    @NotBlank(message = "status can not be empty")
+    private BaseEnum.OaUser.StatusEnum status;
+
+    @Column
+    @ApiModelProperty("账号当前角色名")
+    @NotBlank(message = "roleName can not be empty")
     private String roleName;
 
     @Column
-    @ApiModelProperty("员工性别")
-    private BaseEnum.Employee.GenderEnum gender;
-
-    @ApiModelProperty("员工归属部门")
-    private String deptName;
-
-    @Column
-    @ApiModelProperty("雇佣时间")
-    @Temporal(TemporalType.DATE)
-    @NotBlank(message = "onboardDatetime can not be empty")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date onboardDatetime;
-
-    @Column
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty("账号创建时间")
     @Temporal(TemporalType.DATE)
     @CreatedDate
     @NotBlank(message = "createDatetime can not be empty")
@@ -79,23 +62,35 @@ public class VEmployee {
     private Date createDatetime;
 
     @Column
-    @ApiModelProperty("创建人")
+    @ApiModelProperty("账号创建人")
     @CreatedBy
+    @NotBlank(message = "createBy can not be empty")
     private String createBy;
 
     @Column
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty("账号修改时间")
     @Temporal(TemporalType.DATE)
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateDatetime;
 
     @Column
-    @ApiModelProperty("更新人")
+    @ApiModelProperty("账号修改人")
     @LastModifiedBy
     private String updateBy;
 
-    @Column
-    @ApiModelProperty("备注")
-    private String remark;
+    public OaUsersDto(Employee employee) {
+        this.id = employee.getId();
+        this.nickName = employee.getNickName();
+        this.email = employee.getEmail();
+        this.cellphone = employee.getCellphone();
+        this.status = employee.getStatus();
+        this.createDatetime = employee.getCreateDatetime();
+        this.createBy = employee.getCreateBy();
+        this.updateDatetime = employee.getUpdateDatetime();
+        this.updateBy = employee.getUpdateBy();
+        if (employee.getOaRoles() != null) {
+            this.roleName = employee.getOaRoles().getRoleName();
+        }
+    }
 }

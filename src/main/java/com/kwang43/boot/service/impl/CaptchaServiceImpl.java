@@ -45,7 +45,8 @@ public class CaptchaServiceImpl implements CaptchaService {
             BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setFont(new Font("Arial", Font.PLAIN, 26));
-            g.setColor(Color.WHITE);
+//            g.setColor(Color.WHITE);
+            g.setColor(new Color(244, 247, 251));
             g.fillRect(0, 0, 100, 50);
             g.setColor(Color.BLACK);
 

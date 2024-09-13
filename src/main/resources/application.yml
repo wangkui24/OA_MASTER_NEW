@@ -3,7 +3,7 @@ spring:
     name: admin-client
 
   profiles:
-    active: dev
+    active: prod
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -34,11 +34,7 @@ logging:
   file: logs/app.log #添加开启admin的日志监控
 
 private:
-  key: 'MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAvjWbN2ep/CjSoslpSwC/gGaLEzM6UyN35Y6h6gIjaHJl4zTgtJ7rS0GgjMIBoaMWBqOfI/nPqu8sOybeqzY7/QIDAQABAkBSOoJ7lUkbRdqpnUDzt8MSE0KUblUMlAzFJMBCleIQyITM6X5WUftA/ozXHjjbnySFadUWUj4PmWwZpELyr44BAiEA6JS+NF4sHZR/Z+f39wZd+eVb/7ZVE3mbU9Gq90EyYGECIQDRXKWhK9VHWAxMLpMIPZZuGNZUEap6d+IR/wD6CYbxHQIhAMDCZlGoqw9o/57yVkTZdhGi0fjA+QnHA8EYSIXb9xCBAiEAgjQyNdgC3knd7AsTGg7jXTlJIiOSeHPSPwruWpJOP+kCIEGUI+Fpy3vIJdKYDnZRlKjEV/66zwIuJb4Y2Lw3zS0g'
-
-sendcloud:
-  api-key: dff3a44aedda483137704956c54cfdec
-  user: sc_wq39jl_test_EBf626
+  key: 'MIIBOgIBAAJBAIjOWe0/dZWzM+cJeozP4pzIZdmaYad1CXsfd0Jrnp4Y7w+2gs32j5K2rxA5EY+gDL1SAXkpjm/NaoY9TLlPAXsCAwEAAQJAS7/2iydYNEvFsWfOM6noEGfl/Vc+OzrSxRnnLx/n9CGFUgFyEf3rmZKX9kM1rGwRNUSfjV3ilpa6XxUReyE4AQIhAOxbAuRIhDdpNfY8jHvA6wnXwsiIFB3RTVh7n7kxp8eLAiEAlC00RIkr7XFNzfweDZH32ZM7jFeXlbkvlX/leTqKa9ECIGk9WPtGosB9c06RxUexLbZzQMLDfJmOQW89lHAEgR1jAiAs+1gNojKiny3GZU3eQryh4S9HmGOdAR2v3aaU2a+hsQIhANI4krWFbsGwKx0bwHkGXKefvI6Js2hMLTGx1QWnkXYN'
 
 management:
   endpoints:

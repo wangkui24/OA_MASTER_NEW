@@ -13,4 +13,6 @@ public interface EmployeeService {
     Response<Boolean> saveEmployee(EmployeeDto employeeDto);
 
     Response<Boolean> deleteById(Long id);
+
+    Response<Boolean> searchEmployeeForExport(EmployeeDto employeeDto);
 }
