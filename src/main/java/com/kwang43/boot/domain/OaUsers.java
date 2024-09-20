@@ -53,11 +53,10 @@ public class OaUsers  implements Serializable {
     @ApiModelProperty("账号当前Role")
     @NotBlank(message = "role can not be empty")
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private OaRoles OaRoles;
+    private OaRoles oaRoles;
 
     @Column
     @ApiModelProperty("账号密码")
-    @NotBlank(message = "password can not be empty")
     private String password;
 
     @Column

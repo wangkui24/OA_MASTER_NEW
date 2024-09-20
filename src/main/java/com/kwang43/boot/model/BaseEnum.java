@@ -145,5 +145,6 @@ public interface BaseEnum {
 
         }
         public static final String CREATE_DATE_TIME = "createDatetime";
+        public static final String SYSTEM = "system";
     }
 }

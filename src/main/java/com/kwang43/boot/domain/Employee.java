@@ -59,14 +59,22 @@ public class Employee implements Serializable {
     @NotBlank(message = "status can not be empty")
     private BaseEnum.Employee.EmployeeStatusEnum status;
 
+    @ManyToOne
+    @ApiModelProperty("账号当前Role")
+    @NotBlank(message = "role can not be empty")
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private OaRoles oaRoles;
+
     @Column
     @ApiModelProperty("员工性别")
     @NotBlank(message = "gender can not be empty")
     private BaseEnum.Employee.GenderEnum gender;
 
+    @ManyToOne
     @ApiModelProperty("员工归属部门")
-    @NotBlank(message = "department can not be empty")
-    private Integer deptId;
+    @NotBlank(message = "dept can not be empty")
+    @JoinColumn(name = "dept_id", referencedColumnName = "id")
+    private Dept dept;
 
     @Column
     @ApiModelProperty("密码")
@@ -76,9 +84,9 @@ public class Employee implements Serializable {
     @Column
     @ApiModelProperty("雇佣时间")
     @Temporal(TemporalType.DATE)
-    @NotBlank(message = "employmentDatetime can not be empty")
+    @NotBlank(message = "onboardDate can not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date employmentDatetime;
+    private Date onboardDate;
 
     @Column
     @ApiModelProperty("创建时间")
@@ -91,7 +99,6 @@ public class Employee implements Serializable {
     @Column
     @ApiModelProperty("创建人")
     @CreatedBy
-    @NotBlank(message = "createBy can not be empty")
     private String createBy;
 
     @Column
@@ -102,7 +109,7 @@ public class Employee implements Serializable {
     private Date updateDatetime;
 
     @Column
-    @ApiModelProperty("更新人")
+    @ApiModelProperty("修改人")
     @LastModifiedBy
     private String updateBy;
 

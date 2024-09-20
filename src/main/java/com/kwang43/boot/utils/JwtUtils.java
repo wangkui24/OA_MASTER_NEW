@@ -13,14 +13,14 @@ public class JwtUtils {
     private final String secret = "qwertyuioplkjhgfdsazxcvb";
     private final long expiration = 10800000; // 过期时间设置为3小时
 
-    public String generateToken(String username, String email, String role) {
+    public String generateToken(String email, String password) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .claim("email", email)
-                .claim("role", role)
-                .setSubject(username)
+                .claim("password", password)
+                .setSubject(email)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, secret)

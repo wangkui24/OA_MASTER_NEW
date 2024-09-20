@@ -23,7 +23,6 @@ import java.util.Date;
 @ApiModel
 @NoArgsConstructor
 public class OaUsersDto implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty("账号id")
@@ -84,7 +83,6 @@ public class OaUsersDto implements Serializable {
         this.nickName = employee.getNickName();
         this.email = employee.getEmail();
         this.cellphone = employee.getCellphone();
-        this.status = employee.getStatus();
         this.createDatetime = employee.getCreateDatetime();
         this.createBy = employee.getCreateBy();
         this.updateDatetime = employee.getUpdateDatetime();

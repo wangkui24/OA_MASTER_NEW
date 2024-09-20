@@ -2,10 +2,9 @@ package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.OaUsers;
-import com.kwang43.boot.domain.OaUsersDto;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.OaUsersRepository;
-import com.kwang43.boot.utils.DecryptUtils;
+import com.kwang43.boot.utils.*;
 import com.kwang43.boot.config.EmailService;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
@@ -13,10 +12,6 @@ import com.kwang43.boot.model.BaseEnum;
 import com.kwang43.boot.model.dto.ForgetPasswordDto;
 import com.kwang43.boot.model.dto.LoginDto;
 import com.kwang43.boot.service.SystemService;
-import com.kwang43.boot.utils.HttpStatus;
-import com.kwang43.boot.utils.JwtUtils;
-import com.kwang43.boot.utils.RedisUtils;
-import com.kwang43.boot.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,27 +46,37 @@ public class SystemServiceImpl implements SystemService {
     public Response<Object> login(LoginDto loginDto) {
         try {
             if (redisUtils.exists(loginDto.getUuid())) {
-                Object codeValue = redisUtils.get(loginDto.getUuid());
-                log.info("codeValue: [{}]", codeValue);
-                if (loginDto.getCode().equals(codeValue)) {
+                Object code = redisUtils.get(loginDto.getUuid());
+                log.info("code: [{}]", code);
+                if (loginDto.getCode().equals(code)) {
                     List<Employee> employeeAccounts = employeeRepository.findByEmail(loginDto.getEmail());
                     List<OaUsers> oaAccounts = oaUsersRepository.findByEmail(loginDto.getEmail());
-                    if (StringUtils.isEmpty(employeeAccounts)) {
-                        return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
+                    if (StringUtils.isEmpty(oaAccounts)) {
+                        if (StringUtils.isEmpty(employeeAccounts)) {
+                            return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
+                        }
+                        // check the status of employee
+                        Employee employee = employeeAccounts.get(0);
+                        if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.RESIGNED)) {
+                            return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Employee.EMPLOYEE_HAS_RESIGNED);
+                        } else if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.JOINING_IN)) {
+                            return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Employee.EMPLOYEE_HAS_NOT_IN_SERVICE);
+                        }
+                        // create oa user for employee
+                        return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
                     } else {
                         String decryptedPassword = decryptService.decrypt(employeeAccounts.get(0).getPassword());
                         if (decryptService.decrypt(loginDto.getPassword()).equals(decryptedPassword)) {
-                            Employee employee = employeeAccounts.get(0);
-                            if (employee.getStatus().equals(BaseEnum.Employee.AccountStatusEnum.INACTIVE)) {
+                            OaUsers oaUsers = oaAccounts.get(0);
+                            if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
                                 return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
-                            } else if (employee.getStatus().equals(BaseEnum.Employee.AccountStatusEnum.BLOCKED)) {
+                            } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
                                 return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_BLOCKED);
                             }
-                            OaUsersDto oaUsersDto = new OaUsersDto(employee);
-                            String token = jwtUtils.generateToken(loginDto.getEmail(), employee.getEmail(), oaUsersDto.getRoleName());
+                            String token = jwtUtils.generateToken(loginDto.getEmail(), loginDto.getPassword());
                             HashMap<Object, Object> map = new HashMap<>();
                             map.put("token", token);
-                            map.put("user_info", oaUsersDto);
+                            map.put("user_info", oaUsers);
                             return new Response<>(map);
                         } else {
                             return new Response<>(HttpStatus.ERROR, MessageCode.Account.PASSWORD_ERROR);
@@ -107,7 +112,20 @@ public class SystemServiceImpl implements SystemService {
         }
     }
 
-    private Response<Object> loginByUserType(ForgetPasswordDto forgetPasswordDto) {
-        return new Response<>("成功!");
+    private Boolean createOaUserAccountByEmployee(Employee employee) {
+        try {
+            OaUsers oaUsers = new OaUsers();
+            oaUsers.setNickName(employee.getNickName());
+            oaUsers.setEmail(employee.getEmail());
+            oaUsers.setCellphone(employee.getCellphone());
+//            oaUsers.setOaRoles(employee.setOaRoles());
+            oaUsers.setCreateDatetime(DateUtils.getNowTime());
+            oaUsers.setCreateBy(BaseEnum.Defalut.SYSTEM);
+            return true;
+        }
+        catch(Exception e) {
+            log.info("OA账号创建失败: [{}]", e.getMessage());
+            return false;
+        }
     }
 }
