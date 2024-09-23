@@ -55,16 +55,17 @@ public class SystemServiceImpl implements SystemService {
                         if (StringUtils.isEmpty(employeeAccounts)) {
                             return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
                         }
-                        // check the status of employee
+                        // only exist employee account, check the status of employee
                         Employee employee = employeeAccounts.get(0);
                         if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.RESIGNED)) {
                             return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Employee.EMPLOYEE_HAS_RESIGNED);
                         } else if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.JOINING_IN)) {
                             return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Employee.EMPLOYEE_HAS_NOT_IN_SERVICE);
                         }
-                        // create oa user for employee
-                        return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
+                        // only exist employee account, create oa user for employee
+                        return createOaUserAccountByEmployee(employee);
                     } else {
+                        // exist oa account, check password and status
                         String decryptedPassword = decryptService.decrypt(employeeAccounts.get(0).getPassword());
                         if (decryptService.decrypt(loginDto.getPassword()).equals(decryptedPassword)) {
                             OaUsers oaUsers = oaAccounts.get(0);
@@ -112,20 +113,21 @@ public class SystemServiceImpl implements SystemService {
         }
     }
 
-    private Boolean createOaUserAccountByEmployee(Employee employee) {
+    private Response<Object> createOaUserAccountByEmployee(Employee employee) {
         try {
             OaUsers oaUsers = new OaUsers();
-            oaUsers.setNickName(employee.getNickName());
             oaUsers.setEmail(employee.getEmail());
             oaUsers.setCellphone(employee.getCellphone());
-//            oaUsers.setOaRoles(employee.setOaRoles());
+            oaUsers.setStatus(BaseEnum.OaUser.StatusEnum.INACTIVE);
+            oaUsers.setRoleId(employee.getRoleId());
             oaUsers.setCreateDatetime(DateUtils.getNowTime());
             oaUsers.setCreateBy(BaseEnum.Defalut.SYSTEM);
-            return true;
+            oaUsersRepository.save(oaUsers);
+            return new Response<>(true);
         }
         catch(Exception e) {
             log.info("OA账号创建失败: [{}]", e.getMessage());
-            return false;
+            return new Response<>(false);
         }
     }
 }
