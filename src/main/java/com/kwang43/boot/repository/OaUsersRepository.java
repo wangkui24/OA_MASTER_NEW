@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface OaUsersRepository extends JpaRepository<OaUsers, Integer>, PagingAndSortingRepository<OaUsers, Integer> {
-    List<OaUsers> findByUsername(String username);
+    List<OaUsers> findByNickName(String nickName);
 
     List<OaUsers> findByEmail(String email);
 }

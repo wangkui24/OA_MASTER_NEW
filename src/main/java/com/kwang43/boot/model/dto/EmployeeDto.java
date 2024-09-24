@@ -29,15 +29,15 @@ public class EmployeeDto implements Serializable {
 
     private String email;
 
-    private BaseEnum.Employee.GenderEnum gender;
-
     private BaseEnum.Employee.EmployeeStatusEnum status;
+
+    private Integer roleId;
+
+    private BaseEnum.Employee.GenderEnum gender;
 
     private Integer deptId;
 
-    private Integer schoolId;
-
-    private Date employmentDatetime;
+    private Date onboardDate;
 
     private Date createDatetime;
 

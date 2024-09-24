@@ -37,9 +37,6 @@ public class SystemServiceImpl implements SystemService {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private DecryptUtils decryptService;
-
-    @Autowired
     private EmailService emailService;
 
     @Override
@@ -66,8 +63,7 @@ public class SystemServiceImpl implements SystemService {
                         return createOaUserAccountByEmployee(employee);
                     } else {
                         // exist oa account, check password and status
-                        String decryptedPassword = decryptService.decrypt(employeeAccounts.get(0).getPassword());
-                        if (decryptService.decrypt(loginDto.getPassword()).equals(decryptedPassword)) {
+                        if (oaAccounts.get(0).getPassword().equals(loginDto.getPassword())) {
                             OaUsers oaUsers = oaAccounts.get(0);
                             if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
                                 return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
@@ -98,7 +94,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public Response<Object> forget_password(ForgetPasswordDto forgetPasswordDto) {
         try {
-            List<OaUsers> accountsByUsername = oaUsersRepository.findByUsername(forgetPasswordDto.getUsername());
+            List<OaUsers> accountsByUsername = oaUsersRepository.findByNickName(forgetPasswordDto.getUsername());
             if (StringUtils.isEmpty(accountsByUsername)) {
                 return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.USERNAME_NOT_EXIST);
             }
@@ -123,11 +119,12 @@ public class SystemServiceImpl implements SystemService {
             oaUsers.setCreateDatetime(DateUtils.getNowTime());
             oaUsers.setCreateBy(BaseEnum.Defalut.SYSTEM);
             oaUsersRepository.save(oaUsers);
+            log.info("OA账号创建成功: [{}]", employee);
             return new Response<>(true);
         }
         catch(Exception e) {
-            log.info("OA账号创建失败: [{}]", e.getMessage());
-            return new Response<>(false);
+            log.error("OA账号创建失败: [{}]", e.getMessage());
+            return new Response<>(HttpStatus.ERROR, MessageCode.Account.CREATE_OA_ACCOUNT_FAILED);
         }
     }
 }

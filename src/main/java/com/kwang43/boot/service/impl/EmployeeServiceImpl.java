@@ -90,8 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setGender(employeeDto.getGender());
         employee.setStatus(employeeDto.getStatus());
         employee.setDeptId(employeeDto.getDeptId());
-        employee.setSchoolId(employeeDto.getSchoolId());
-        employee.setEmploymentDatetime(employeeDto.getEmploymentDatetime());
+        employee.setOnboardDate(employeeDto.getOnboardDate());
         employee.setCreateDatetime(employeeDto.getCreateDatetime());
         employee.setCreateBy(employeeDto.getName());
         employee.setUpdateDatetime(employeeDto.getUpdateDatetime());

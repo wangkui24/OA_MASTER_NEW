@@ -9,18 +9,18 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
-@Service
 public class DecryptUtils {
-    private final PrivateKey privateKey;
+
+    private static PrivateKey privateKey = null;
 
     public DecryptUtils(@Value("${private.key}") String privateKeyBase64) throws Exception {
         byte[] keyBytes = Base64.getDecoder().decode(privateKeyBase64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory kf = KeyFactory.getInstance("RSA");
-        this.privateKey = kf.generatePrivate(keySpec);
+        privateKey = kf.generatePrivate(keySpec);
     }
 
-    public String decrypt(String encryptedData) throws Exception {
+    public static String decrypt(String encryptedData) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
 

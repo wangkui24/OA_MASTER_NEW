@@ -78,17 +78,4 @@ public class OaUsersDto implements Serializable {
     @LastModifiedBy
     private String updateBy;
 
-    public OaUsersDto(Employee employee) {
-        this.id = employee.getId();
-        this.nickName = employee.getNickName();
-        this.email = employee.getEmail();
-        this.cellphone = employee.getCellphone();
-        this.createDatetime = employee.getCreateDatetime();
-        this.createBy = employee.getCreateBy();
-        this.updateDatetime = employee.getUpdateDatetime();
-        this.updateBy = employee.getUpdateBy();
-        if (employee.getOaRoles() != null) {
-            this.roleName = employee.getOaRoles().getRoleName();
-        }
-    }
 }
