@@ -14,7 +14,7 @@ spring:
 
   redis:
     database: 0
-    host: 124.223.216.179
+    host: 127.0.0.1
     port: 6379
     password: 123456
 
@@ -22,4 +22,4 @@ spring:
     admin:
       client:
         # 服务端地址
-        url: http://124.223.216.179:1234
+        url: http://172.18.60.169:1234
