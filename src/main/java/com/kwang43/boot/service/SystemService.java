@@ -5,7 +5,7 @@ import com.kwang43.boot.model.dto.ForgetPasswordDto;
 import com.kwang43.boot.model.dto.LoginDto;
 
 public interface SystemService {
-    Response<Object> login(LoginDto loginDto);
+    Object login(LoginDto loginDto);
 
     Response<Object> forget_password(ForgetPasswordDto forgetPasswordDto);
 }

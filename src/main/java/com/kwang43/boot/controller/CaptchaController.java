@@ -16,7 +16,7 @@ public class CaptchaController {
     @GetMapping("/captcha")
     @ApiOperation(value="获取图片验证码", notes="")
     public Response<Object> getCaptcha(@RequestParam(required = false) String old_uuid) {
-        return captchaService.generateCaptchaImage(old_uuid);
+        return new Response<>(captchaService.generateCaptchaImage(old_uuid));
     }
 }
 

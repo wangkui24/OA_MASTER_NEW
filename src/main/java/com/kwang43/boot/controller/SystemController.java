@@ -29,7 +29,7 @@ public class SystemController {
     @PostMapping("/login")
     @ApiOperation(value="登录", notes="")
     public Response<Object> login(@RequestBody LoginDto loginDto) {
-        return systemService.login(loginDto);
+        return new Response<>(systemService.login(loginDto));
     }
 
     /**

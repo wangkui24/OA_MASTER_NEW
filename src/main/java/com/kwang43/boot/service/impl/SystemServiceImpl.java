@@ -14,6 +14,7 @@ import com.kwang43.boot.model.dto.LoginDto;
 import com.kwang43.boot.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class SystemServiceImpl implements SystemService {
     private EmailService emailService;
 
     @Override
-    public Response<Object> login(LoginDto loginDto) {
+    public Object login(LoginDto loginDto) {
         try {
             if (redisUtils.exists(loginDto.getUuid())) {
                 Object code = redisUtils.get(loginDto.getUuid());
@@ -55,9 +56,9 @@ public class SystemServiceImpl implements SystemService {
                         // only exist employee account, check the status of employee
                         Employee employee = employeeAccounts.get(0);
                         if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.RESIGNED)) {
-                            return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Employee.EMPLOYEE_HAS_RESIGNED);
+                            throw new DataIntegrityViolationException(MessageCode.Employee.EMPLOYEE_HAS_RESIGNED);
                         } else if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.JOINING_IN)) {
-                            return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Employee.EMPLOYEE_HAS_NOT_IN_SERVICE);
+                            throw new DataIntegrityViolationException(MessageCode.Employee.EMPLOYEE_HAS_NOT_IN_SERVICE);
                         }
                         // only exist employee account, create oa user for employee
                         return createOaUserAccountByEmployee(employee);
@@ -66,9 +67,9 @@ public class SystemServiceImpl implements SystemService {
                         if (oaAccounts.get(0).getPassword().equals(loginDto.getPassword())) {
                             OaUsers oaUsers = oaAccounts.get(0);
                             if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
-                                return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_INACTIVE);
+                                throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
                             } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
-                                return new Response<>(HttpStatus.FORBIDDEN, MessageCode.Account.ACCOUNT_IS_BLOCKED);
+                                throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_BLOCKED);
                             }
                             String token = jwtUtils.generateToken(loginDto.getEmail(), loginDto.getPassword());
                             HashMap<Object, Object> map = new HashMap<>();
@@ -76,18 +77,18 @@ public class SystemServiceImpl implements SystemService {
                             map.put("user_info", oaUsers);
                             return new Response<>(map);
                         } else {
-                            return new Response<>(HttpStatus.ERROR, MessageCode.Account.PASSWORD_ERROR);
+                            throw new DataIntegrityViolationException(MessageCode.Account.PASSWORD_ERROR);
                         }
                     }
                 } else {
-                    return new Response<>(HttpStatus.ERROR, MessageCode.Captcha.CAPTCHA_ERROR);
+                    throw new DataIntegrityViolationException(MessageCode.Captcha.CAPTCHA_ERROR);
                 }
             } else {
-                return new Response<>(HttpStatus.ERROR, MessageCode.Captcha.CAPTCHA_ERROR_OR_EXPIRE);
+                throw new DataIntegrityViolationException(MessageCode.Captcha.CAPTCHA_ERROR_OR_EXPIRE);
             }
         } catch (Exception e) {
             log.info("error: [{}]", e.getMessage());
-            return null;
+            throw new DataIntegrityViolationException(MessageCode.System.SERVER_ERROR);
         }
     }
 

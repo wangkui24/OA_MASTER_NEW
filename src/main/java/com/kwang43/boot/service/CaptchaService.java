@@ -5,5 +5,5 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public interface CaptchaService {
-    Response<Object> generateCaptchaImage(String old_uuid);
+    Object generateCaptchaImage(String old_uuid);
 }

@@ -8,6 +8,7 @@ import com.kwang43.boot.utils.RedisUtils;
 import com.kwang43.boot.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,18 +35,18 @@ public class CaptchaServiceImpl implements CaptchaService {
     private RedisUtils redisUtils;
 
     @Override
-    public Response<Object> generateCaptchaImage(String old_uuid) {
+    public Object generateCaptchaImage(String oldUuid) {
         // 如果提供了上一次生成验证码的uuid且其在redis中存在，则删除旧的验证码
         // 保证同一设备同一时间在redis最多只能有一条数据
-        if (StringUtils.isNotEmpty(old_uuid) && redisUtils.exists(old_uuid)) {
-            redisUtils.remove(old_uuid);
+        if (StringUtils.isNotEmpty(oldUuid) && redisUtils.exists(oldUuid)) {
+            redisUtils.remove(oldUuid);
         }
         try {
             // 生成验证码图片
             BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setFont(new Font("Arial", Font.PLAIN, 26));
-//            g.setColor(Color.WHITE);
+            g.setColor(Color.WHITE);
             g.setColor(new Color(244, 247, 251));
             g.fillRect(0, 0, 100, 50);
             g.setColor(Color.BLACK);
@@ -76,10 +77,10 @@ public class CaptchaServiceImpl implements CaptchaService {
             map.put("image", base64);
             map.put("uuid", uuid);
             log.info("base64: [{}], uuid: [{}]", base64, uuid);
-            return new Response<>(map);
+            return map;
         } catch (Exception e) {
             log.error("捕获到异常: [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.Captcha.CREATE_CAPTCHA_FAILED);
+            throw new DataIntegrityViolationException(MessageCode.Captcha.CREATE_CAPTCHA_FAILED);
         }
     }
 
