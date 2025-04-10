@@ -23,7 +23,7 @@ import java.util.Date;
 @ApiModel
 @NoArgsConstructor
 @Table(name="oa_users")
-public class OaUsers  implements Serializable {
+public class OaUsers implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

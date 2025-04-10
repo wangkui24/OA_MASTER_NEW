@@ -2,6 +2,7 @@ package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
+import com.kwang43.boot.model.response.CaptchaResponse;
 import com.kwang43.boot.service.CaptchaService;
 import com.kwang43.boot.utils.HttpStatus;
 import com.kwang43.boot.utils.RedisUtils;
@@ -35,7 +36,7 @@ public class CaptchaServiceImpl implements CaptchaService {
     private RedisUtils redisUtils;
 
     @Override
-    public Object generateCaptchaImage(String oldUuid) {
+    public CaptchaResponse generateCaptchaImage(String oldUuid) {
         // 如果提供了上一次生成验证码的uuid且其在redis中存在，则删除旧的验证码
         // 保证同一设备同一时间在redis最多只能有一条数据
         if (StringUtils.isNotEmpty(oldUuid) && redisUtils.exists(oldUuid)) {
@@ -73,11 +74,11 @@ public class CaptchaServiceImpl implements CaptchaService {
             // 生成UUID并存储在Redis中，设置有效期为2分钟
             String uuid = UUID.randomUUID().toString();
             redisUtils.set(uuid, randomString, 2);
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("image", base64);
-            map.put("uuid", uuid);
+            CaptchaResponse captchaResponse = new CaptchaResponse();
+            captchaResponse.setImage(base64);
+            captchaResponse.setUuid(uuid);
             log.info("base64: [{}], uuid: [{}]", base64, uuid);
-            return map;
+            return captchaResponse;
         } catch (Exception e) {
             log.error("捕获到异常: [{}]", e.getMessage());
             throw new DataIntegrityViolationException(MessageCode.Captcha.CREATE_CAPTCHA_FAILED);

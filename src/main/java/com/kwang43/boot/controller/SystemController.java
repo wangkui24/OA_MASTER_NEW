@@ -3,6 +3,7 @@ package com.kwang43.boot.controller;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.model.dto.ForgetPasswordDto;
 import com.kwang43.boot.model.dto.LoginDto;
+import com.kwang43.boot.model.response.LoginResponse;
 import com.kwang43.boot.service.SystemService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class SystemController {
      **/
     @PostMapping("/login")
     @ApiOperation(value="登录", notes="")
-    public Response<Object> login(@RequestBody LoginDto loginDto) {
+    public Response<LoginResponse> login(@RequestBody LoginDto loginDto) {
         return new Response<>(systemService.login(loginDto));
     }
 

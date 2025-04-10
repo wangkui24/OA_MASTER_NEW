@@ -2,6 +2,9 @@ package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.OaUsers;
+import com.kwang43.boot.config.BaseMapperService;
+import com.kwang43.boot.model.dto.OaUsersBaseDto;
+import com.kwang43.boot.model.response.LoginResponse;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.OaUsersRepository;
 import com.kwang43.boot.utils.*;
@@ -17,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -40,55 +42,42 @@ public class SystemServiceImpl implements SystemService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private BaseMapperService baseMapperService;
+
     @Override
-    public Object login(LoginDto loginDto) {
-        try {
-            if (redisUtils.exists(loginDto.getUuid())) {
-                Object code = redisUtils.get(loginDto.getUuid());
-                log.info("code: [{}]", code);
-                if (loginDto.getCode().equals(code)) {
-                    List<Employee> employeeAccounts = employeeRepository.findByEmail(loginDto.getEmail());
-                    List<OaUsers> oaAccounts = oaUsersRepository.findByEmail(loginDto.getEmail());
-                    if (StringUtils.isEmpty(oaAccounts)) {
-                        if (StringUtils.isEmpty(employeeAccounts)) {
-                            return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.ACCOUNT_NOT_EXIST);
-                        }
-                        // only exist employee account, check the status of employee
-                        Employee employee = employeeAccounts.get(0);
-                        if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.RESIGNED)) {
-                            throw new DataIntegrityViolationException(MessageCode.Employee.EMPLOYEE_HAS_RESIGNED);
-                        } else if (employee.getStatus().equals(BaseEnum.Employee.EmployeeStatusEnum.JOINING_IN)) {
-                            throw new DataIntegrityViolationException(MessageCode.Employee.EMPLOYEE_HAS_NOT_IN_SERVICE);
-                        }
-                        // only exist employee account, create oa user for employee
-                        return createOaUserAccountByEmployee(employee);
-                    } else {
-                        // exist oa account, check password and status
-                        if (oaAccounts.get(0).getPassword().equals(loginDto.getPassword())) {
-                            OaUsers oaUsers = oaAccounts.get(0);
-                            if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
-                                throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
-                            } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
-                                throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_BLOCKED);
-                            }
-                            String token = jwtUtils.generateToken(loginDto.getEmail(), loginDto.getPassword());
-                            HashMap<Object, Object> map = new HashMap<>();
-                            map.put("token", token);
-                            map.put("user_info", oaUsers);
-                            return new Response<>(map);
-                        } else {
-                            throw new DataIntegrityViolationException(MessageCode.Account.PASSWORD_ERROR);
-                        }
-                    }
+    public LoginResponse login(LoginDto loginDto) {
+        log.info("loginDto: [{}]", loginDto);
+        if (redisUtils.exists(loginDto.getUuid())) {
+            Object code = redisUtils.get(loginDto.getUuid());
+            if (loginDto.getCode().equals(code)) {
+                List<OaUsers> oaAccounts = oaUsersRepository.findByEmail(loginDto.getEmail());
+                if (StringUtils.isEmpty(oaAccounts)) {
+                    throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_NOT_EXIST);
                 } else {
-                    throw new DataIntegrityViolationException(MessageCode.Captcha.CAPTCHA_ERROR);
+                    // exist oa account, check password and status
+                    if (oaAccounts.get(0).getPassword().equals(loginDto.getPassword())) {
+                        OaUsers oaUsers = oaAccounts.get(0);
+                        OaUsersBaseDto oaUsersBaseDto = baseMapperService.getOaUsersBaseDto(oaUsers);
+                        if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
+                            throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
+                        } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
+                            throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_BLOCKED);
+                        }
+                        String token = jwtUtils.generateToken(loginDto.getEmail(), loginDto.getPassword());
+                        LoginResponse loginResponse = new LoginResponse();
+                        loginResponse.setToken(token);
+                        loginResponse.setUserInfo(oaUsersBaseDto);
+                        return loginResponse;
+                    } else {
+                        throw new DataIntegrityViolationException(MessageCode.Account.PASSWORD_ERROR);
+                    }
                 }
             } else {
-                throw new DataIntegrityViolationException(MessageCode.Captcha.CAPTCHA_ERROR_OR_EXPIRE);
+                throw new DataIntegrityViolationException(MessageCode.Captcha.CAPTCHA_ERROR);
             }
-        } catch (Exception e) {
-            log.info("error: [{}]", e.getMessage());
-            throw new DataIntegrityViolationException(MessageCode.System.SERVER_ERROR);
+        } else {
+            throw new DataIntegrityViolationException(MessageCode.Captcha.CAPTCHA_ERROR_OR_EXPIRE);
         }
     }
 
