@@ -66,9 +66,9 @@ public class VEmployee {
     @Column
     @ApiModelProperty("雇佣时间")
     @Temporal(TemporalType.DATE)
-    @NotBlank(message = "onboardDatetime can not be empty")
+    @NotBlank(message = "onboardDate can not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date onboardDatetime;
+    private Date onboardDate;
 
     @Column
     @ApiModelProperty("创建时间")

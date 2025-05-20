@@ -64,7 +64,7 @@ public class SystemServiceImpl implements SystemService {
                         } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
                             throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_BLOCKED);
                         }
-                        String token = jwtUtils.generateToken(loginDto.getEmail(), loginDto.getPassword());
+                        String token = jwtUtils.generateToken(loginDto.getEmail(), oaUsers.getNickName());
                         LoginResponse loginResponse = new LoginResponse();
                         loginResponse.setToken(token);
                         loginResponse.setUserInfo(oaUsersBaseDto);

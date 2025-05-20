@@ -44,12 +44,12 @@ public class CaptchaServiceImpl implements CaptchaService {
         }
         try {
             // 生成验证码图片
-            BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_INT_RGB);
+            BufferedImage image = new BufferedImage(100, 45, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setFont(new Font("Arial", Font.PLAIN, 26));
             g.setColor(Color.WHITE);
             g.setColor(new Color(244, 247, 251));
-            g.fillRect(0, 0, 100, 50);
+            g.fillRect(0, 0, 100, 45);
             g.setColor(Color.BLACK);
 
             // 生成随机字符串并计算宽度
@@ -58,8 +58,8 @@ public class CaptchaServiceImpl implements CaptchaService {
             int stringWidth = fontMetrics.stringWidth(randomString);
 
             // 计算居中位置
-            int x = (100 - stringWidth) / 2;
-            int y = 40;
+            int x = (image.getWidth() - stringWidth) / 2;
+            int y = 32;
 
             // 绘制字符串
             g.drawString(randomString, x, y);
