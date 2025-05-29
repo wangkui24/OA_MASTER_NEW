@@ -1,7 +1,7 @@
 package com.kwang43.boot.config;
 
 import com.kwang43.boot.domain.OaUsers;
-import com.kwang43.boot.model.dto.OaUsersBaseDto;
+import com.kwang43.boot.model.dto.OaUsersDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class BaseMapperService {
         this.modelMapper = new ModelMapper();
     }
 
-    public OaUsersBaseDto getOaUsersBaseDto(OaUsers oaUsers) {
-        return modelMapper.map(oaUsers, OaUsersBaseDto.class);
+    public OaUsersDto getOaUsersBaseDto(OaUsers oaUsers) {
+        return modelMapper.map(oaUsers, OaUsersDto.class);
     }
 }

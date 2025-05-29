@@ -3,8 +3,8 @@ package com.kwang43.boot.service.impl;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.OaUsers;
 import com.kwang43.boot.config.BaseMapperService;
-import com.kwang43.boot.model.dto.OaUsersBaseDto;
 import com.kwang43.boot.model.response.LoginResponse;
+import com.kwang43.boot.model.dto.OaUsersDto;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.OaUsersRepository;
 import com.kwang43.boot.utils.*;
@@ -58,7 +58,7 @@ public class SystemServiceImpl implements SystemService {
                     // exist oa account, check password and status
                     if (oaAccounts.get(0).getPassword().equals(loginDto.getPassword())) {
                         OaUsers oaUsers = oaAccounts.get(0);
-                        OaUsersBaseDto oaUsersBaseDto = baseMapperService.getOaUsersBaseDto(oaUsers);
+                        OaUsersDto userInfo = baseMapperService.getOaUsersBaseDto(oaUsers);
                         if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
                             throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
                         } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
@@ -66,8 +66,9 @@ public class SystemServiceImpl implements SystemService {
                         }
                         String token = jwtUtils.generateToken(loginDto.getEmail(), oaUsers.getNickName());
                         LoginResponse loginResponse = new LoginResponse();
-                        loginResponse.setToken(token);
-                        loginResponse.setUserInfo(oaUsersBaseDto);
+                        loginResponse.setUserInfo(userInfo);
+                        // 验证后立即删除，防止重复使用
+                        redisUtils.remove(loginDto.getUuid());
                         return loginResponse;
                     } else {
                         throw new DataIntegrityViolationException(MessageCode.Account.PASSWORD_ERROR);

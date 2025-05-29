@@ -10,9 +10,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginResponse implements Serializable {
+
     private static final long serialVersionUID = 2L;
 
-    private String token;
-
     private Object userInfo;
+
+    private Object security;
+
 }
