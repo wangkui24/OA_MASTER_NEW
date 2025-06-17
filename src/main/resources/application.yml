@@ -2,23 +2,36 @@ spring:
   application:
     name: admin-client
 
+  security:
+    user:
+      name: kwang43
+      password: wangkui123!
+
+  boot:
+    admin:
+      client:
+        # 服务端地址
+        url: http://127.0.0.1:9999
+        username: ${spring.security.user.name}
+        password: ${spring.security.user.password}
+
   profiles:
     active: prod
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
 
-  mail:
-    host: smtp.qq.com
-    port: 587
-    username: wangkui24@foxmail.com
-    password: wlxfawtntwvveege
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+#  mail:
+#    host: smtp.qq.com
+#    port: 587
+#    username: wangkui24@foxmail.com
+#    password: wlxfawtntwvveege
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
 
 jpa:
   database: mysql

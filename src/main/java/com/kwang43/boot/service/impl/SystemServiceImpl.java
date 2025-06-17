@@ -10,7 +10,7 @@ import com.kwang43.boot.model.dto.OaUsersDto;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.OaUsersRepository;
 import com.kwang43.boot.utils.*;
-import com.kwang43.boot.config.EmailService;
+//import com.kwang43.boot.config.EmailService;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.model.BaseEnum;
@@ -41,8 +41,8 @@ public class SystemServiceImpl implements SystemService {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
-    private EmailService emailService;
+//    @Autowired
+//    private EmailService emailService;
 
     @Autowired
     private BaseMapperService baseMapperService;
@@ -108,7 +108,7 @@ public class SystemServiceImpl implements SystemService {
             if (!accountsByUsername.get(0).getEmail().equals(forgetPasswordDto.getEmail())) {
                 return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Account.EMAIL_NOT_MATCH);
             }
-            emailService.sendPasswordResetEmail(forgetPasswordDto.getEmail(), "https://baidu.com");
+//            emailService.sendPasswordResetEmail(forgetPasswordDto.getEmail(), "https://baidu.com");
             return new Response<>("邮件发送成功!");
         } catch (Exception e) {
             log.info("邮件发送失败: [{}]", e.getMessage());
@@ -116,7 +116,7 @@ public class SystemServiceImpl implements SystemService {
         }
     }
 
-    private Response<Object> createOaUserAccountByEmployee(Employee employee) {
+    private Response<Object> createOaAccountByEmployee(Employee employee) {
         try {
             OaUsers oaUsers = new OaUsers();
             oaUsers.setEmail(employee.getEmail());

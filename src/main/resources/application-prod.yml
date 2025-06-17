@@ -18,8 +18,10 @@ spring:
     port: 6379
     password:
 
-  boot:
-    admin:
-      client:
-        # 服务端地址
-        url: http://172.18.60.169:9999
+#boot:
+#  admin:
+#    client:
+#      # 服务端地址
+#      url: http://127.0.0.1:9999
+#        username: ${admin.security.user.name}
+#        password: ${admin.security.user.password}
