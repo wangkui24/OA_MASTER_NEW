@@ -21,6 +21,7 @@ public interface MessageCode {
         public static final String SEND_EMAIL_FAILED = "COM0013";
         public static final String CREATE_OA_ACCOUNT_FAILED = "COM0017";
         public static final String OA_ACCOUNT_NOT_EXIST = "COM0018";
+        public static final String EMIAL_IS_EXISTED = "COM0019";
     }
 
     class Captcha {

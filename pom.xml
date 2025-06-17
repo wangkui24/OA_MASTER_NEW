@@ -129,6 +129,13 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.1</version> <!-- 确保使用最新版本 -->
         </dependency>
+
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>

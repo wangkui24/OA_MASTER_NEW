@@ -1,24 +1,22 @@
 package com.kwang43.boot.service.impl;
 
-import com.kwang43.boot.config.Response;
+import com.kwang43.boot.config.EncryptionService;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.model.response.CaptchaResponse;
 import com.kwang43.boot.service.CaptchaService;
-import com.kwang43.boot.utils.HttpStatus;
 import com.kwang43.boot.utils.RedisUtils;
 import com.kwang43.boot.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.UUID;
 
 @Slf4j
@@ -34,6 +32,9 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private EncryptionService encryptionService;
 
     @Override
     public CaptchaResponse generateCaptchaImage(String oldUuid) {
@@ -80,7 +81,7 @@ public class CaptchaServiceImpl implements CaptchaService {
             log.info("base64: [{}], uuid: [{}]", base64, uuid);
             return captchaResponse;
         } catch (Exception e) {
-            log.error("捕获到异常: [{}]", e.getMessage());
+            log.error("generateCaptchaImage error: [{}]", e.getMessage());
             throw new DataIntegrityViolationException(MessageCode.Captcha.CREATE_CAPTCHA_FAILED);
         }
     }

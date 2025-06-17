@@ -36,6 +36,13 @@ logging:
 private:
   key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArWvHReUF38nT0as1ziXryvJkbsS8MGgV8X4hzsicOJueoTSlUwsO2KUXjpLUiPPhIN0Mkr8R8gQcul5OXK30i/11ycx2LDDmGE7ako1Wr9PH0vmKCJmQBoDueH/YUJL6KQEvJRMWobHYZ4FsPFkc+/8A/JaIy2W7CyLZeXRc7lNW6uMLJkjD+4brhHAemtYcgEOGU/ajuX44YTrQez7aG7B3QgfeDulN5BhEH72qWPr1ECSEsQh4AgyHTb7Bq7qWg7AokR3UEDBuY/+BJ06r9ZYmsG0tf2iv9ZPyIbeqCsNLhObuswCjNHTSM7pkECE20kueF4MfBk4GQwG9S+ThpwIDAQAB'
 
+jasypt:
+  encryptor:
+    password: D@CX654321
+
+oaUser:
+    defaultPassword: DXC@123456
+
 management:
   endpoints:
     web:

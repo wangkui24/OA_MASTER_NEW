@@ -1,8 +1,10 @@
 package com.kwang43.boot.service.impl;
 
+import com.kwang43.boot.config.EncryptionService;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.OaUsers;
 import com.kwang43.boot.config.BaseMapperService;
+import com.kwang43.boot.model.dto.SaveOaUsersDto;
 import com.kwang43.boot.model.response.LoginResponse;
 import com.kwang43.boot.model.dto.OaUsersDto;
 import com.kwang43.boot.repository.EmployeeRepository;
@@ -45,6 +47,9 @@ public class SystemServiceImpl implements SystemService {
     @Autowired
     private BaseMapperService baseMapperService;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
     @Override
     public LoginResponse login(LoginDto loginDto) {
         log.info("loginDto: [{}]", loginDto);
@@ -55,8 +60,8 @@ public class SystemServiceImpl implements SystemService {
                 if (StringUtils.isEmpty(oaAccounts)) {
                     throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_NOT_EXIST);
                 } else {
-                    // exist oa account, check password and status
-                    if (oaAccounts.get(0).getPassword().equals(loginDto.getPassword())) {
+                    // if exist the oa account, check password and status
+                    if (encryptionService.decrypt(oaAccounts.get(0).getPassword()).equals(loginDto.getPassword())) {
                         OaUsers oaUsers = oaAccounts.get(0);
                         OaUsersDto userInfo = baseMapperService.getOaUsersBaseDto(oaUsers);
                         if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
@@ -67,7 +72,8 @@ public class SystemServiceImpl implements SystemService {
                         String token = jwtUtils.generateToken(loginDto.getEmail(), oaUsers.getNickName());
                         LoginResponse loginResponse = new LoginResponse();
                         loginResponse.setUserInfo(userInfo);
-                        // 验证后立即删除，防止重复使用
+
+                        // delete captcha info if successful login
                         redisUtils.remove(loginDto.getUuid());
                         return loginResponse;
                     } else {
@@ -83,7 +89,17 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Response<Object> forget_password(ForgetPasswordDto forgetPasswordDto) {
+    public Boolean saveOaUser(SaveOaUsersDto saveOaUsersDto) {
+        List<OaUsers> oaUsersList = oaUsersRepository.findByEmail(saveOaUsersDto.getEmail());
+        if (!oaUsersList.isEmpty()) {
+            throw new DataIntegrityViolationException(MessageCode.Account.EMIAL_IS_EXISTED);
+        }
+        return true;
+    }
+
+
+    @Override
+    public Response<Object> forgetPassword(ForgetPasswordDto forgetPasswordDto) {
         try {
             List<OaUsers> accountsByUsername = oaUsersRepository.findByNickName(forgetPasswordDto.getUsername());
             if (StringUtils.isEmpty(accountsByUsername)) {
