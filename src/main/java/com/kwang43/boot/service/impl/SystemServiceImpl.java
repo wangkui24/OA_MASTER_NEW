@@ -56,13 +56,13 @@ public class SystemServiceImpl implements SystemService {
         if (redisUtils.exists(loginDto.getUuid())) {
             Object code = redisUtils.get(loginDto.getUuid());
             if (loginDto.getCode().equals(code)) {
-                List<OaUsers> oaAccounts = oaUsersRepository.findByEmail(loginDto.getEmail());
-                if (StringUtils.isEmpty(oaAccounts)) {
+                OaUsers oaAccounts = oaUsersRepository.findByEmail(loginDto.getEmail());
+                if (oaAccounts == null) {
                     throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_NOT_EXIST);
                 } else {
                     // if exist the oa account, check password and status
-                    if (encryptionService.decrypt(oaAccounts.get(0).getPassword()).equals(loginDto.getPassword())) {
-                        OaUsers oaUsers = oaAccounts.get(0);
+                    if (encryptionService.decrypt(oaAccounts.getPassword()).equals(loginDto.getPassword())) {
+                        OaUsers oaUsers = oaAccounts;
                         OaUsersDto userInfo = baseMapperService.getOaUsersBaseDto(oaUsers);
                         if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
                             throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
@@ -90,8 +90,8 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Boolean saveOaUser(SaveOaUsersDto saveOaUsersDto) {
-        List<OaUsers> oaUsersList = oaUsersRepository.findByEmail(saveOaUsersDto.getEmail());
-        if (!oaUsersList.isEmpty()) {
+        OaUsers oaUsers = oaUsersRepository.findByEmail(saveOaUsersDto.getEmail());
+        if (oaUsers == null) {
             throw new DataIntegrityViolationException(MessageCode.Account.EMIAL_IS_EXISTED);
         }
         return true;

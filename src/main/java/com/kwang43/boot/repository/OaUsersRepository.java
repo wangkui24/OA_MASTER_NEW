@@ -11,5 +11,7 @@ import java.util.List;
 public interface OaUsersRepository extends JpaRepository<OaUsers, Integer>, PagingAndSortingRepository<OaUsers, Integer> {
     List<OaUsers> findByNickName(String nickName);
 
-    List<OaUsers> findByEmail(String email);
+    OaUsers findByEmail(String email);
+
+    OaUsers findByEmailIgnoreCase(String email);
 }
