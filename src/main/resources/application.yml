@@ -7,14 +7,6 @@ spring:
       name: kwang43
       password: wangkui123!
 
-  boot:
-    admin:
-      client:
-        # 服务端地址
-        url: http://127.0.0.1:9999
-        username: ${spring.security.user.name}
-        password: ${spring.security.user.password}
-
   profiles:
     active: prod
 
@@ -55,6 +47,14 @@ jasypt:
 
 oaUser:
     defaultPassword: DXC@123456
+
+#Authorization Server Configuration
+access_token:
+  validity:
+    period: 36000
+refresh_token:
+  validity:
+    period: 36000
 
 management:
   endpoints:

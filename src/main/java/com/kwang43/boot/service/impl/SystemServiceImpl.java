@@ -72,6 +72,7 @@ public class SystemServiceImpl implements SystemService {
                         String token = jwtUtils.generateToken(loginDto.getEmail(), oaUsers.getNickName());
                         LoginResponse loginResponse = new LoginResponse();
                         loginResponse.setUserInfo(userInfo);
+                        loginResponse.setSecurity(token);
 
                         // delete captcha info if successful login
                         redisUtils.remove(loginDto.getUuid());
@@ -122,7 +123,7 @@ public class SystemServiceImpl implements SystemService {
             oaUsers.setEmail(employee.getEmail());
             oaUsers.setCellphone(employee.getCellphone());
             oaUsers.setStatus(BaseEnum.OaUser.StatusEnum.INACTIVE);
-            oaUsers.setRoleId(employee.getRoleId());
+//            oaUsers.setRoleId(employee.getRoleId());
             oaUsers.setCreateDatetime(DateUtils.getNowTime());
             oaUsers.setCreateBy(BaseEnum.Defalut.SYSTEM);
             oaUsersRepository.save(oaUsers);

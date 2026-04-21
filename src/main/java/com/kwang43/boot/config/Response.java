@@ -29,7 +29,7 @@ public class Response<T> {
      */
     public Response() {
         this.code = HttpStatus.SUCCESS;
-        this.msg = "请求成功";
+        this.msg = "SUCCESS";
     }
 
     /**
@@ -48,7 +48,7 @@ public class Response<T> {
      */
     public Response(T data) {
         this.code = HttpStatus.SUCCESS;
-        this.msg = "请求成功";
+        this.msg = "SUCCESS";
         this.data = data;
     }
 

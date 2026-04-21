@@ -38,7 +38,7 @@ public class UserDetailWeb extends UserDetailBase{
         OaUsers oaUsers = findByEmail(email);
 
         Set<GrantedAuthority> authorities = getGrantedAuthoritiesByUserType(Const.TerminalType.CLIENT_WEB);
-        oaUsers.getGroup().getRoles().forEach(r -> authorities.add(new SimpleGrantedAuthority(String.format("%s%s", Const.ROLE_PREFIX, r.getName()))));
+        oaUsers.getOaRoles().getPermission().forEach(r -> authorities.add(new SimpleGrantedAuthority(String.format("%s%s", Const.ROLE_PREFIX, r.getName()))));
 
         return CustomizeUserInfo.with()
                 .nickName(oaUsers.getNickName())

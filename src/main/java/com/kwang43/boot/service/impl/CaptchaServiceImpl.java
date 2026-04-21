@@ -78,7 +78,7 @@ public class CaptchaServiceImpl implements CaptchaService {
             CaptchaResponse captchaResponse = new CaptchaResponse();
             captchaResponse.setImage(base64);
             captchaResponse.setUuid(uuid);
-            log.info("base64: [{}], uuid: [{}]", base64, uuid);
+            log.info("base64: [{}], uuid: [{}]", randomString, uuid);
             return captchaResponse;
         } catch (Exception e) {
             log.error("generateCaptchaImage error: [{}]", e.getMessage());

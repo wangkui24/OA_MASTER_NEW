@@ -14,14 +14,14 @@ spring:
 
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 106.53.55.21
     port: 6379
-    password:
+    password: wangkui123
 
-#boot:
-#  admin:
-#    client:
-#      # 服务端地址
-#      url: http://127.0.0.1:9999
-#        username: ${admin.security.user.name}
-#        password: ${admin.security.user.password}
+boot:
+  admin:
+    client:
+      # 服务端地址
+      url: http://127.0.0.1:9999
+      username: ${admin.security.user.name}
+      password: ${admin.security.user.password}
