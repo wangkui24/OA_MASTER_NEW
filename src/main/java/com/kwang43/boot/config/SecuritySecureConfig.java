@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
-@Order(2)
+@Order(3)
 public class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
     private final String adminContextPath;
 

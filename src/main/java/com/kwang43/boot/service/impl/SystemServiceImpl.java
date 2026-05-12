@@ -2,11 +2,14 @@ package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.EncryptionService;
 import com.kwang43.boot.domain.Employee;
+import com.kwang43.boot.domain.OaRoles;
 import com.kwang43.boot.domain.OaUsers;
+import com.kwang43.boot.domain.Permission;
 import com.kwang43.boot.config.BaseMapperService;
 import com.kwang43.boot.model.dto.SaveOaUsersDto;
 import com.kwang43.boot.model.response.LoginResponse;
 import com.kwang43.boot.model.dto.OaUsersDto;
+import com.kwang43.boot.model.response.SecurityResponse;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.OaUsersRepository;
 import com.kwang43.boot.utils.*;
@@ -23,6 +26,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -60,21 +64,44 @@ public class SystemServiceImpl implements SystemService {
                 if (oaAccounts == null) {
                     throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_NOT_EXIST);
                 } else {
-                    // if exist the oa account, check password and status
                     if (encryptionService.decrypt(oaAccounts.getPassword()).equals(loginDto.getPassword())) {
                         OaUsers oaUsers = oaAccounts;
-                        OaUsersDto userInfo = baseMapperService.getOaUsersBaseDto(oaUsers);
                         if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.INACTIVE)) {
                             throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_INACTIVE);
                         } else if (oaUsers.getStatus().equals(BaseEnum.OaUser.StatusEnum.BLOCKED)) {
                             throw new DataIntegrityViolationException(MessageCode.Account.ACCOUNT_IS_BLOCKED);
                         }
-                        String token = jwtUtils.generateToken(loginDto.getEmail(), oaUsers.getNickName());
-                        LoginResponse loginResponse = new LoginResponse();
-                        loginResponse.setUserInfo(userInfo);
-                        loginResponse.setSecurity(token);
 
-                        // delete captcha info if successful login
+                        OaUsersDto userInfo = baseMapperService.getOaUsersBaseDto(oaUsers);
+                        OaRoles oaRoles = oaUsers.getOaRoles();
+                        String roleName = null;
+                        List<String> permissions = null;
+                        if (oaRoles != null) {
+                            roleName = oaRoles.getRoleName();
+                            userInfo.setRoleName(roleName);
+                            if (oaRoles.getPermission() != null) {
+                                permissions = oaRoles.getPermission().stream()
+                                        .map(Permission::getName)
+                                        .collect(Collectors.toList());
+                            }
+                        }
+
+                        String accessToken = jwtUtils.generateToken(loginDto.getEmail(), oaUsers.getNickName(), roleName, permissions);
+                        String refreshToken = jwtUtils.generateRefreshToken(loginDto.getEmail());
+
+                        SecurityResponse securityResponse = SecurityResponse.builder()
+                                .access_token(accessToken)
+                                .refresh_token(refreshToken)
+                                .token_type("Bearer")
+                                .expires_in(jwtUtils.getExpiration())
+                                .nick_name(oaUsers.getNickName())
+                                .permissions(permissions)
+                                .build();
+
+                        LoginResponse loginResponse = new LoginResponse();
+                        loginResponse.setOaAccount(userInfo);
+                        loginResponse.setSecurity(securityResponse);
+
                         redisUtils.remove(loginDto.getUuid());
                         return loginResponse;
                     } else {

@@ -13,7 +13,7 @@ public class LoginResponse implements Serializable {
 
     private static final long serialVersionUID = 2L;
 
-    private Object userInfo;
+    private Object oaAccount;
 
     private Object security;
 

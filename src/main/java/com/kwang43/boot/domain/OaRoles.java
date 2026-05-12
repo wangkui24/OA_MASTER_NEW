@@ -46,7 +46,4 @@ public class OaRoles extends BaseEntity implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Permission> permission;
 
-    @OneToMany(mappedBy = "oaRoles", cascade = CascadeType.MERGE)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<OaUsers> oaUsers;
 }

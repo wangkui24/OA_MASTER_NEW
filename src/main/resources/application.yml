@@ -8,7 +8,7 @@ spring:
       password: wangkui123!
 
   profiles:
-    active: prod
+    active: dev
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -44,6 +44,8 @@ private:
 jasypt:
   encryptor:
     password: D@CX654321
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    iv-generator-classname: org.jasypt.iv.RandomIvGenerator
 
 oaUser:
     defaultPassword: DXC@123456

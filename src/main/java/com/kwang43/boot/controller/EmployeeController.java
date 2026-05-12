@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,6 +31,7 @@ public class EmployeeController {
 
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE_READONLY', 'EMPLOYEE_MANAGEMENT')")
     public Response<Page<VEmployee>>findEmployees(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
                                          @RequestParam(value = "size", defaultValue = Const.DEFAULT_PAGE_SIZE) int size,
                                          @RequestParam(value = "sortField", defaultValue = "id") String sortField,
@@ -40,6 +42,7 @@ public class EmployeeController {
 
     @GetMapping(path = "/{id}")
     @ApiOperation(value="按id查询员工信息", notes="")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE_READONLY', 'EMPLOYEE_MANAGEMENT')")
     public Response<VEmployee> findEmployeeById(@PathVariable("id") Long id) {
         return employeeService.findEmployeeById(id);
     }
@@ -50,6 +53,7 @@ public class EmployeeController {
      */
     @PostMapping("")
     @ApiOperation(value="添加员工", notes="")
+    @PreAuthorize("hasAuthority('EMPLOYEE_MANAGEMENT')")
     public Response<Boolean> addEmployee(@RequestBody EmployeeDto employeeDto) {
         return employeeService.saveEmployee(employeeDto);
     }
@@ -57,6 +61,7 @@ public class EmployeeController {
 
     @DeleteMapping(path = "/{id}")
     @ApiOperation(value="按id删除员工", notes="")
+    @PreAuthorize("hasAuthority('EMPLOYEE_MANAGEMENT')")
     public Response<Boolean> deleteById(@PathVariable("id") Long id) {
         return employeeService.deleteById(id);
     }

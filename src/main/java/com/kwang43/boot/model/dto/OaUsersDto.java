@@ -5,6 +5,8 @@ import com.kwang43.boot.model.BaseEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,6 +20,6 @@ public class OaUsersDto {
 
     private BaseEnum.OaUser.StatusEnum status;
 
-    private Integer roleId;
+    private String roleName;
 
 }

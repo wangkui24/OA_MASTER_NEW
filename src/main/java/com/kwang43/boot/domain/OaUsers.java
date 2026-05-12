@@ -23,7 +23,9 @@ import java.util.Date;
 @ApiModel
 @NoArgsConstructor
 @Table(name="oa_users")
-public class OaUsers implements Serializable {
+public class OaUsers extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = -4796729318125817623L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,30 +70,5 @@ public class OaUsers implements Serializable {
     @ApiModelProperty("登陆token")
     private String token;
 
-    @Column
-    @ApiModelProperty("账号创建时间")
-    @Temporal(TemporalType.DATE)
-    @CreatedDate
-    @NotBlank(message = "createDatetime can not be empty")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createDatetime;
-
-    @Column
-    @ApiModelProperty("账号创建人")
-    @CreatedBy
-    @NotBlank(message = "createBy can not be empty")
-    private String createBy;
-
-    @Column
-    @ApiModelProperty("账号修改时间")
-    @Temporal(TemporalType.DATE)
-    @LastModifiedDate
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateDatetime;
-
-    @Column
-    @ApiModelProperty("账号修改人")
-    @LastModifiedBy
-    private String updateBy;
 
 }
