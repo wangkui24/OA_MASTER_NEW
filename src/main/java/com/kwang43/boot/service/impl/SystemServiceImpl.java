@@ -94,7 +94,6 @@ public class SystemServiceImpl implements SystemService {
                                 .refresh_token(refreshToken)
                                 .token_type("Bearer")
                                 .expires_in(jwtUtils.getExpiration())
-                                .nick_name(oaUsers.getNickName())
                                 .permissions(permissions)
                                 .build();
 
@@ -120,7 +119,7 @@ public class SystemServiceImpl implements SystemService {
     public Boolean saveOaUser(SaveOaUsersDto saveOaUsersDto) {
         OaUsers oaUsers = oaUsersRepository.findByEmail(saveOaUsersDto.getEmail());
         if (oaUsers == null) {
-            throw new DataIntegrityViolationException(MessageCode.Account.EMIAL_IS_EXISTED);
+            throw new DataIntegrityViolationException(MessageCode.Account.EMAIL_IS_EXISTED);
         }
         return true;
     }

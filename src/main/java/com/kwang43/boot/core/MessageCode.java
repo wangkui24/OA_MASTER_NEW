@@ -5,7 +5,7 @@ public interface MessageCode {
         private System() {
         }
 
-        public static final String SERVER_ERROR = "COM0000";
+        public static final String SERVER_ERROR = "SERVER_ERROR";
     }
 
     class Account {
@@ -21,7 +21,7 @@ public interface MessageCode {
         public static final String SEND_EMAIL_FAILED = "SEND_EMAIL_FAILED";
         public static final String CREATE_OA_ACCOUNT_FAILED = "CREATE_OA_ACCOUNT_FAILED";
         public static final String OA_ACCOUNT_NOT_EXIST = "OA_ACCOUNT_NOT_EXIST";
-        public static final String EMIAL_IS_EXISTED = "EMIAL_IS_EXISTED";
+        public static final String EMAIL_IS_EXISTED = "EMIAL_IS_EXISTED";
     }
 
     class Captcha {

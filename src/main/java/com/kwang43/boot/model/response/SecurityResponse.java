@@ -15,6 +15,5 @@ public class SecurityResponse implements Serializable {
     private String refresh_token;
     private String token_type;
     private Long expires_in;
-    private String nick_name;
     private List<String> permissions;
 }
