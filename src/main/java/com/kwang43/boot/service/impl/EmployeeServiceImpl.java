@@ -5,6 +5,7 @@ import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
 import com.kwang43.boot.model.dto.EmployeeDto;
+import com.kwang43.boot.model.dto.PageResult;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.VEmployeeRepository;
 import com.kwang43.boot.service.EmployeeService;
@@ -34,11 +35,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     private VEmployeeRepository vEmployeeRepository;
 
     @Override
-    public Response<Page<VEmployee>> findAllEmployee(int page, int size, String sortField, String sortOrder) {
+    public Response<PageResult<VEmployee>> findAllEmployee(int page, int size, String sortField, String sortOrder) {
         try {
             Pageable pageable = PageableUtil.createPageable(page, size, sortField, sortOrder);
             Page<VEmployee> vEmployeeRepositoryAll = vEmployeeRepository.findAll(pageable);
-            return new Response<>(vEmployeeRepositoryAll);
+            PageResult<VEmployee> pageResult = new PageResult<>(vEmployeeRepositoryAll);
+            return new Response<>(pageResult);
         } catch (Exception e) {
             log.error("findAllEmployee error [{}]", e.getMessage());
             return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);

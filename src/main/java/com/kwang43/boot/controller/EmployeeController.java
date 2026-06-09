@@ -5,6 +5,7 @@ import com.kwang43.boot.core.Const;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
 import com.kwang43.boot.model.dto.EmployeeDto;
+import com.kwang43.boot.model.dto.PageResult;
 import com.kwang43.boot.service.EmployeeService;
 import com.kwang43.boot.utils.PageableUtil;
 import io.swagger.annotations.ApiOperation;
@@ -32,10 +33,10 @@ public class EmployeeController {
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_READONLY', 'EMPLOYEE_MANAGEMENT')")
-    public Response<Page<VEmployee>>findEmployees(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
-                                         @RequestParam(value = "size", defaultValue = Const.DEFAULT_PAGE_SIZE) int size,
-                                         @RequestParam(value = "sortField", defaultValue = "id") String sortField,
-                                         @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
+    public Response<PageResult<VEmployee>>findEmployees(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
+                                                        @RequestParam(value = "size", defaultValue = Const.DEFAULT_PAGE_SIZE) int size,
+                                                        @RequestParam(value = "sortField", defaultValue = "id") String sortField,
+                                                        @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
         return employeeService.findAllEmployee(page,size,sortField,sortOrder);
     }
 
