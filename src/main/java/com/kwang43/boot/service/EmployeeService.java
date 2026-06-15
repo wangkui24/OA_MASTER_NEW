@@ -7,13 +7,13 @@ import com.kwang43.boot.model.dto.PageResult;
 import org.springframework.data.domain.Page;
 
 public interface EmployeeService {
-    Response<PageResult<VEmployee>> findAllEmployee(int page, int size, String sortField, String sortOrder);
+    PageResult<VEmployee> findAllEmployee(int page, int size, String sortField, String sortOrder);
 
-    Response<VEmployee> findEmployeeById(Long id);
+    VEmployee findEmployeeById(Long id);
 
-    Response<Boolean> saveEmployee(EmployeeDto employeeDto);
+    Boolean saveEmployee(EmployeeDto employeeDto);
 
-    Response<Boolean> deleteById(Long id);
+    Boolean deleteById(Long id);
 
-    Response<Boolean> searchEmployeeForExport(EmployeeDto employeeDto);
+    Boolean searchEmployeeForExport(EmployeeDto employeeDto);
 }

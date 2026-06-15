@@ -33,11 +33,11 @@ public class EmployeeController {
     @GetMapping("")
     @ApiOperation(value="获取员工列表", notes="")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_READONLY', 'EMPLOYEE_MANAGEMENT')")
-    public Response<PageResult<VEmployee>>findEmployees(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
-                                                        @RequestParam(value = "size", defaultValue = Const.DEFAULT_PAGE_SIZE) int size,
-                                                        @RequestParam(value = "sortField", defaultValue = "id") String sortField,
-                                                        @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
-        return employeeService.findAllEmployee(page,size,sortField,sortOrder);
+    public Response<PageResult<VEmployee>>findAllEmployee(@RequestParam(value = "page", defaultValue = Const.DEFAULT_PAGE_INDEX) int page,
+                                                                  @RequestParam(value = "size", defaultValue = Const.DEFAULT_PAGE_SIZE) int size,
+                                                                  @RequestParam(value = "sortField", defaultValue = "id") String sortField,
+                                                                  @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
+        return new Response<>(employeeService.findAllEmployee(page,size,sortField,sortOrder));
     }
 
 
@@ -45,7 +45,7 @@ public class EmployeeController {
     @ApiOperation(value="按id查询员工信息", notes="")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_READONLY', 'EMPLOYEE_MANAGEMENT')")
     public Response<VEmployee> findEmployeeById(@PathVariable("id") Long id) {
-        return employeeService.findEmployeeById(id);
+        return new Response<>(employeeService.findEmployeeById(id));
     }
 
 
@@ -56,7 +56,7 @@ public class EmployeeController {
     @ApiOperation(value="添加员工", notes="")
     @PreAuthorize("hasAuthority('EMPLOYEE_MANAGEMENT')")
     public Response<Boolean> addEmployee(@RequestBody EmployeeDto employeeDto) {
-        return employeeService.saveEmployee(employeeDto);
+        return new Response<>(employeeService.saveEmployee(employeeDto));
     }
 
 
@@ -64,7 +64,7 @@ public class EmployeeController {
     @ApiOperation(value="按id删除员工", notes="")
     @PreAuthorize("hasAuthority('EMPLOYEE_MANAGEMENT')")
     public Response<Boolean> deleteById(@PathVariable("id") Long id) {
-        return employeeService.deleteById(id);
+        return new Response<>(employeeService.deleteById(id));
     }
 
 }

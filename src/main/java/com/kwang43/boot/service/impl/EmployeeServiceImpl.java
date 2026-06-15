@@ -1,5 +1,6 @@
 package com.kwang43.boot.service.impl;
 
+import com.kwang43.boot.config.ResourceNotFoundException;
 import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.Employee;
@@ -13,6 +14,7 @@ import com.kwang43.boot.utils.HttpStatus;
 import com.kwang43.boot.utils.PageableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,53 +37,39 @@ public class EmployeeServiceImpl implements EmployeeService {
     private VEmployeeRepository vEmployeeRepository;
 
     @Override
-    public Response<PageResult<VEmployee>> findAllEmployee(int page, int size, String sortField, String sortOrder) {
+    public PageResult<VEmployee> findAllEmployee(int page, int size, String sortField, String sortOrder) {
         try {
             Pageable pageable = PageableUtil.createPageable(page, size, sortField, sortOrder);
             Page<VEmployee> vEmployeeRepositoryAll = vEmployeeRepository.findAll(pageable);
-            PageResult<VEmployee> pageResult = new PageResult<>(vEmployeeRepositoryAll);
-            return new Response<>(pageResult);
+            return new PageResult<>(vEmployeeRepositoryAll);
         } catch (Exception e) {
             log.error("findAllEmployee error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
+            throw new DataIntegrityViolationException(MessageCode.System.SERVER_ERROR);
         }
     }
+
 
     @Override
-    public Response<VEmployee> findEmployeeById(Long id) {
-        try {
-            VEmployee vEmployee = vEmployeeRepository.findById(id).orElse(null);
-            if (vEmployee != null) {
-                return new Response<>(vEmployee);
-            } else {
-                return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Employee.NOT_FOUND_EMPLOYEE);
-            }
-        } catch (Exception e) {
-            log.error("findEmployeeById error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
-        }
+    public VEmployee findEmployeeById(Long id) {
+        return vEmployeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageCode.Employee.NOT_FOUND_EMPLOYEE));
     }
 
 
-    public Response<Boolean> saveEmployee(EmployeeDto employeeDto) {
-        try {
-            List<VEmployee> vEmployeeByCellphone = vEmployeeRepository.findByCellphone(employeeDto.getCellphone());
-            if (!vEmployeeByCellphone.isEmpty()) {
-                return new Response<>(HttpStatus.HAS_EXISTED, MessageCode.Employee.MOBILE_NUMBER_HAS_EXISTED);
-            }
-            List<VEmployee> vEmployeeByEmail = vEmployeeRepository.findByEmail(employeeDto.getCellphone());
-            if (!vEmployeeByEmail.isEmpty()) {
-                return new Response<>(HttpStatus.HAS_EXISTED, MessageCode.Employee.EMAIL_HAS_EXISTED);
-            }
-            Employee employee = saveEmployeeByDto(employeeDto);
-            employeeRepository.save(employee);
-            log.info("saveEmployee successfully");
-            return new Response<>(true);
-        } catch (Exception e) {
-            log.error("saveEmployee error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
+    public Boolean saveEmployee(EmployeeDto employeeDto) {
+        List<VEmployee> vEmployeeByCellphone = vEmployeeRepository.findByCellphone(employeeDto.getCellphone());
+        if (!vEmployeeByCellphone.isEmpty()) {
+            throw new DataIntegrityViolationException(MessageCode.Employee.MOBILE_NUMBER_HAS_EXISTED);
         }
+        List<VEmployee> vEmployeeByEmail = vEmployeeRepository.findByEmail(employeeDto.getCellphone());
+        if (!vEmployeeByEmail.isEmpty()) {
+            throw new DataIntegrityViolationException(MessageCode.Employee.EMAIL_HAS_EXISTED);
+        }
+        Employee employee = saveEmployeeByDto(employeeDto);
+        employeeRepository.save(employee);
+        log.info("saveEmployee successfully");
+        return true;
     }
+
 
     private static Employee saveEmployeeByDto(EmployeeDto employeeDto) {
         Employee employee = new Employee();
@@ -101,30 +89,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+
     @Override
-    public Response<Boolean> deleteById(Long id) {
-        try {
-            VEmployee vEmployee = vEmployeeRepository.findById(id).orElse(null);
-            if (vEmployee != null) {
-                employeeRepository.deleteById(id);
-                return new Response<>(true);
-            } else {
-                return new Response<>(HttpStatus.NO_CONTENT, MessageCode.Employee.NOT_FOUND_EMPLOYEE);
-            }
-        } catch (Exception e) {
-            log.error("deleteEmployeeById error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.System.SERVER_ERROR);
+    public Boolean deleteById(Long id) {
+        VEmployee vEmployee = vEmployeeRepository.findById(id).orElse(null);
+        if (vEmployee != null) {
+            employeeRepository.deleteById(id);
+            return true;
+        } else {
+            throw new DataIntegrityViolationException(MessageCode.Employee.NOT_FOUND_EMPLOYEE);
         }
     }
 
+
     @Override
-    public Response<Boolean> searchEmployeeForExport(EmployeeDto employeeDto) {
+    public Boolean searchEmployeeForExport(EmployeeDto employeeDto) {
         try {
             System.out.println("--START TO EXPORT EMPLOYEE--");
-            return new Response<>(true);
+            return true;
         } catch (Exception e) {
             log.error("search employee ForExport error [{}]", e.getMessage());
-            return new Response<>(HttpStatus.ERROR, MessageCode.Employee.EXPORT_EMPLOYEE_FAILED);
+            throw new DataIntegrityViolationException(MessageCode.Employee.EXPORT_EMPLOYEE_FAILED);
         }
     }
 }
