@@ -33,9 +33,9 @@ public class Const {
     public static final String LOG_MDC_ID = "trace_id";
 
     //for pagination
-    public static final String DEFAULT_PAGE_SIZE = "10";
-    public static final String DEFAULT_PAGE_INDEX = "0";
-    public static final String DEFAULT_MAX_PAGE_SIZE = "3000";
+    public static final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final Integer DEFAULT_PAGE_INDEX = 0;
+    public static final Integer DEFAULT_MAX_PAGE_SIZE = 3000;
 
     public static final String ROLE_WEB_USER = "WEB_OPERATOR";
     public static final String ROLE_APP_USER = "APP_OPERATOR";
