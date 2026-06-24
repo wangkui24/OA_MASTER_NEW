@@ -71,8 +71,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private void addCriteriaPredicatePart(List<Predicate> listCode, EmployeeQueryDto employeeQueryDto, CriteriaBuilder criteriaBuilder, Root<VEmployee> root) {
-        if (!StringUtils.isEmpty(employeeQueryDto.getEId())) {
-            listCode.add(criteriaBuilder.like(root.get("id").as(String.class), "%" + employeeQueryDto.getEId() + "%"));
+        if (employeeQueryDto.getId() != null) {
+            listCode.add(criteriaBuilder.like(root.get("id").as(String.class), "%" + employeeQueryDto.getId() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getName())) {
             listCode.add(criteriaBuilder.like(root.get("name").as(String.class), "%" + employeeQueryDto.getName() + "%"));

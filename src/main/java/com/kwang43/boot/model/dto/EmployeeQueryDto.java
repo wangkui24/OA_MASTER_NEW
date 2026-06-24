@@ -17,7 +17,7 @@ public class EmployeeQueryDto extends QueryBase implements Serializable {
 
     private static final long serialVersionUID = 749724619346154799L;
 
-    private String eId;
+    private Integer Id;
 
     private String name;
 
