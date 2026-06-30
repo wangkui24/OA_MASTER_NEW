@@ -2,21 +2,16 @@ package com.kwang43.boot.controller;
 
 import com.kwang43.boot.config.PagedResource;
 import com.kwang43.boot.config.Response;
-import com.kwang43.boot.core.Const;
-import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
-import com.kwang43.boot.model.dto.EmployeeDto;
 import com.kwang43.boot.model.dto.EmployeeQueryDto;
-import com.kwang43.boot.model.dto.PageResult;
 import com.kwang43.boot.service.EmployeeService;
-import com.kwang43.boot.utils.PageableUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 功能：
@@ -37,6 +32,13 @@ public class EmployeeController {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_READONLY', 'EMPLOYEE_MANAGEMENT')")
     public PagedResource<VEmployee> findAllEmployee(@RequestBody EmployeeQueryDto employeeQueryDto) {
         return new PagedResource<>(employeeService.findAllEmployee(employeeQueryDto), "page", "perPage");
+    }
+
+    @PostMapping("/searchEmployeeExport")
+    @ApiOperation(value="导出员工列表", notes="")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE_EXPORT', 'EMPLOYEE_MANAGEMENT')")
+    public Response<List<VEmployee>> searchEmployeeExport(@RequestBody EmployeeQueryDto employeeQueryDto) {
+        return new Response<>(employeeService.searchEmployeeExport(employeeQueryDto));
     }
 
 

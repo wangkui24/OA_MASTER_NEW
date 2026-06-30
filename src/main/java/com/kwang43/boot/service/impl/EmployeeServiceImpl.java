@@ -1,19 +1,15 @@
 package com.kwang43.boot.service.impl;
 
 import com.kwang43.boot.config.ResourceNotFoundException;
-import com.kwang43.boot.config.Response;
 import com.kwang43.boot.core.Const;
 import com.kwang43.boot.core.MessageCode;
 import com.kwang43.boot.domain.Employee;
 import com.kwang43.boot.domain.VEmployee;
 import com.kwang43.boot.model.dto.EmployeeDto;
 import com.kwang43.boot.model.dto.EmployeeQueryDto;
-import com.kwang43.boot.model.dto.PageResult;
 import com.kwang43.boot.repository.EmployeeRepository;
 import com.kwang43.boot.repository.VEmployeeRepository;
 import com.kwang43.boot.service.EmployeeService;
-import com.kwang43.boot.utils.HttpStatus;
-import com.kwang43.boot.utils.PageableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Predicate> listCode = new ArrayList<>();
         addCriteriaPredicatePart(listCode, employeeQueryDto, criteriaBuilder, root);
 
-        return criteriaBuilder.and(listCode.toArray(new Predicate[listCode.size()]));
+        return criteriaBuilder.and(listCode.toArray(new Predicate[0]));
     }
 
     private void addCriteriaPredicatePart(List<Predicate> listCode, EmployeeQueryDto employeeQueryDto, CriteriaBuilder criteriaBuilder, Root<VEmployee> root) {
@@ -81,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             listCode.add(criteriaBuilder.like(root.get("email").as(String.class), "%" + employeeQueryDto.getEmail() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getMobile())) {
-            listCode.add(criteriaBuilder.like(root.get("mobile").as(String.class), "%" + employeeQueryDto.getMobile() + "%"));
+            listCode.add(criteriaBuilder.like(root.get("cellphone").as(String.class), "%" + employeeQueryDto.getMobile() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getDeptName())) {
             listCode.add(criteriaBuilder.like(root.get("deptName").as(String.class), "%" + employeeQueryDto.getDeptName() + "%"));
@@ -98,6 +94,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeQueryDto.getOnboardDateTo() != null) {
             listCode.add(criteriaBuilder.like(root.get("onboardDateTo").as(String.class), "%" + employeeQueryDto.getOnboardDateTo() + "%"));
         }
+    }
+
+    @Override
+    public List<VEmployee> searchEmployeeExport(EmployeeQueryDto employeeQueryDto) {
+        return vEmployeeRepository.findAll(getSpecification(employeeQueryDto));
+
     }
 
     @Override
