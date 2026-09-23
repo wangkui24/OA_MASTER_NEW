@@ -8,7 +8,7 @@ spring:
       password: wangkui123!
 
   profiles:
-    active: dev
+    active: prod
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

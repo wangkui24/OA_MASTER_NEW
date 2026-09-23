@@ -34,10 +34,6 @@ public class VEmployee {
     private String name;
 
     @Column
-    @ApiModelProperty("员工昵称")
-    private String nickName;
-
-    @Column
     @ApiModelProperty("员工手机号")
     @NotBlank(message = "cellphone can not be empty")
     private String cellphone;
@@ -68,7 +64,7 @@ public class VEmployee {
     @Temporal(TemporalType.DATE)
     @NotBlank(message = "onboardDate can not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date onboardDate;
+    private Date onboardingDate;
 
     @Column
     @ApiModelProperty("创建时间")

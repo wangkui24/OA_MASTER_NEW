@@ -38,6 +38,7 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public CaptchaResponse generateCaptchaImage(String oldUuid) {
+        // System.out.println(encryptionService.encrypt("DXC@123456"));
         // 如果提供了上一次生成验证码的uuid且其在redis中存在，则删除旧的验证码
         // 保证同一设备同一时间在redis最多只能有一条数据
         if (StringUtils.isNotEmpty(oldUuid) && redisUtils.exists(oldUuid)) {

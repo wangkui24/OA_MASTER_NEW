@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -80,10 +79,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             listCode.add(criteriaBuilder.like(root.get("cellphone").as(String.class), "%" + employeeQueryDto.getMobile() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getDeptName())) {
-            listCode.add(criteriaBuilder.like(root.get("deptName").as(String.class), "%" + employeeQueryDto.getDeptName() + "%"));
+            listCode.add(criteriaBuilder.like(root.get("dept_name").as(String.class), "%" + employeeQueryDto.getDeptName() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getRoleName())) {
-            listCode.add(criteriaBuilder.like(root.get("roleName").as(String.class), "%" + employeeQueryDto.getRoleName() + "%"));
+            listCode.add(criteriaBuilder.like(root.get("role_name").as(String.class), "%" + employeeQueryDto.getRoleName() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getStatus())) {
             listCode.add(criteriaBuilder.like(root.get("status").as(String.class), "%" + employeeQueryDto.getStatus() + "%"));
@@ -99,7 +98,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<VEmployee> searchEmployeeExport(EmployeeQueryDto employeeQueryDto) {
         return vEmployeeRepository.findAll(getSpecification(employeeQueryDto));
-
     }
 
     @Override
@@ -117,14 +115,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!vEmployeeByEmail.isEmpty()) {
             throw new DataIntegrityViolationException(MessageCode.Employee.EMAIL_HAS_EXISTED);
         }
-        Employee employee = saveEmployeeByDto(employeeDto);
+        Employee employee = buildEmployee(employeeDto);
         employeeRepository.save(employee);
         log.info("saveEmployee successfully");
         return true;
     }
 
 
-    private static Employee saveEmployeeByDto(EmployeeDto employeeDto) {
+    private static Employee buildEmployee(EmployeeDto employeeDto) {
         Employee employee = new Employee();
         employee.setName(employeeDto.getName());
         employee.setNickName(employeeDto.getNickName());
