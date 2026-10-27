@@ -23,7 +23,7 @@ public class EmployeeQueryDto extends QueryBase implements Serializable {
 
     private String email;
 
-    private String mobile;
+    private String cellphone;
 
     private String deptName;
 

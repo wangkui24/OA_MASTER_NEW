@@ -75,8 +75,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!StringUtils.isEmpty(employeeQueryDto.getEmail())) {
             listCode.add(criteriaBuilder.like(root.get("email").as(String.class), "%" + employeeQueryDto.getEmail() + "%"));
         }
-        if (!StringUtils.isEmpty(employeeQueryDto.getMobile())) {
-            listCode.add(criteriaBuilder.like(root.get("cellphone").as(String.class), "%" + employeeQueryDto.getMobile() + "%"));
+        if (!StringUtils.isEmpty(employeeQueryDto.getCellphone())) {
+            listCode.add(criteriaBuilder.like(root.get("cellphone").as(String.class), "%" + employeeQueryDto.getCellphone() + "%"));
         }
         if (!StringUtils.isEmpty(employeeQueryDto.getDeptName())) {
             listCode.add(criteriaBuilder.like(root.get("dept_name").as(String.class), "%" + employeeQueryDto.getDeptName() + "%"));
